@@ -6,6 +6,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.12",
     "react-thunk": "^1.0.0",
     "redux": "^3.7.2"
@@ -18,8 +19,6 @@
     "lint:js": "eslint src"
   },
   "devDependencies": {
-    "eslint": "^4.6.0",
-    "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-react": "^7.3.0"
+    "eslint": "^4.6.1"
   }
 }
