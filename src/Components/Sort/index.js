@@ -24,15 +24,15 @@ class Sort extends Component {
         return (
             <div className="sort">
                 <div className="sort-item">
-                    <span>Sort by</span>
-                    <select onChange={this.handleChangeField} ref={input => this.fieldInput = input} value={field}>
+                    <span className="sort-item-label">Sort by</span>
+                    <select className="sort-item-select" onChange={this.handleChangeField} ref={input => this.fieldInput = input} value={field}>
                         <option value="timestamp">Date</option>
                         <option value="voteScore">Votes</option>
                     </select>
                 </div>
                 <div className="sort-item">
-                    <span>Sort direction</span>
-                    <select onChange={this.handleChangeDirection} ref={input => this.directionInput = input} value={direction}>
+                    <span className="sort-item-label">Sort direction</span>
+                    <select className="sort-item-select" onChange={this.handleChangeDirection} ref={input => this.directionInput = input} value={direction}>
                         <option value="desc">Descending</option>
                         <option value="asc">Ascending</option>
                     </select>

@@ -16,6 +16,7 @@ body {
     background-color: #efefef;
     font-family: Helvetica, Arial, sans-serif;
     font-size: .875em;
+    min-width: 20em;
     margin: 0;
     padding: 0;
 }
