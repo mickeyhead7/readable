@@ -1,0 +1,30 @@
+.category-heading {
+    margin: 2em;
+}
+
+.category-posts {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -1px;
+}
+
+.category-post {
+    margin: 0 0 1px 1px;
+    width: calc(100% - 1px);
+}
+
+.category-post .post-partial {
+    height: 100%;
+}
+
+@media screen and (min-width: 40.0625em) {
+    .category-post {
+        width: calc(50% - 1px);
+    }
+}
+
+@media screen and (min-width: 60.0625em) {
+    .category-post {
+        width: calc(33.33333% - 1px);
+    }
+}

@@ -1,0 +1,8 @@
+.sort {
+    display: flex;
+    margin: 0 2em 0 0;
+}
+
+.sort-item {
+    margin: 0 0 2em 2em;
+}

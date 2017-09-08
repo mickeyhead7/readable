@@ -1,0 +1,10 @@
+.post-partial {
+    background-color: #fff;
+    padding: 2em;
+    transition: transform 0.1s ease-in-out;
+}
+
+.post-partial:hover {
+    box-shadow: 0 0 .375em #ccc;
+    transform: scale(1.05);
+}

@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import Comments from './Comments';
-import CommentForm from './CommentForm';
+import Comments from '../../Comments';
+import CommentForm from '../../CommentForm';
+import Vote from '../../Vote';
 
 class Post extends Component {
     render () {
         return (
             <article>
-                <head>
+                <header>
                     <h2>Post title</h2>
-                </head>
+                </header>
+                <section>
+                    Post body...
+                </section>
+                <footer>
+                    <Vote />
+                </footer>
                 <div>
                     <CommentForm />
                     <Comments />

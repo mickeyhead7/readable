@@ -1,0 +1,29 @@
+.nav {
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.nav-menu {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav-item {
+    list-style: none;
+    margin: 0;
+    width: 100%;
+}
+
+.nav-link {
+    display: block;
+    padding: 1.5em 2em;
+}
+
+.nav-link:hover {
+    background: #e4e4e4;
+}
+
+@media screen and (min-width: 40.0625em) {
+    .nav-item {
+        width: auto;
+    }
+}
