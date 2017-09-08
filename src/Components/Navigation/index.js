@@ -1,17 +1,10 @@
 import { connect } from 'react-redux';
-import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
-import { addCategories } from '../../Actions';
+import { Link } from 'react-router-dom';
 
 import './styles.css';
 
 class Navigation extends Component {
-    componentDidMount () {
-        API.fetchCategories().then(categories => {
-            this.props.dispatch(addCategories(categories));
-        });
-    }
-
     render () {
         const { categories = [] } = this.props;
 
@@ -19,11 +12,11 @@ class Navigation extends Component {
             <nav className="nav">
                 <ul className="nav-menu">
                     <li className="nav-item">
-                        <a className="nav-link" href="/">all posts</a>
+                        <Link className="nav-link" to="/">all posts</Link>
                     </li>
                     {categories.map((category, key) => (
                         <li className="nav-item" key={key}>
-                            <a className="nav-link" href={`/${category.path}`}>{category.name}</a>
+                            <Link className="nav-link" to={`/${category.path}`}>{category.name}</Link>
                         </li>
                     ))}
                 </ul>
@@ -33,7 +26,9 @@ class Navigation extends Component {
 }
 
 function mapStateToProps({ categories }) {
-    return categories;
+    return {
+        categories: categories.items,
+    };
 }
 
 export default connect(mapStateToProps)(Navigation);

@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
-import { setSort } from '../../Actions';
 import React, { Component } from 'react';
-import { addPosts } from '../../Actions';
-import TheCategory from '../../Components/Posts';
+import ThePosts from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
+import { addCategories, addPosts, setSort } from '../../Actions';
 
 class Posts extends Component {
     componentDidMount () {
-        const { field, direction } = this.props;
+        const { fetchCategories, sort } = this.props;
 
-        this.getSortedPosts(field, direction);
+        fetchCategories();
+        this.getSortedPosts(sort.field, sort.direction);
     }
 
     fetchPosts = () => {
@@ -36,7 +36,7 @@ class Posts extends Component {
             <div>
                 <Navigation />
                 <main>
-                    <TheCategory
+                    <ThePosts
                         category={category}
                         onSort={this.getSortedPosts}
                         posts={posts}
@@ -47,14 +47,20 @@ class Posts extends Component {
     }
 }
 
-function mapStateToProps({ posts, sort }) {
+function mapStateToProps({ categories, posts, sort }) {
     return {
+        categories: categories.items,
         posts: posts.items,
         sort,
     };
 }
 
 const mapDispatchToProps = dispatch => ({
+    fetchCategories: () => {
+        API.fetchCategories().then(categories => {
+            dispatch(addCategories(categories));
+        });
+    },
     onSort: (posts, field, direction) => {
         dispatch(setSort(field, direction));
         dispatch(addPosts(posts, field, direction));

@@ -7,7 +7,7 @@ const categories = (state = {}, action) => {
         case ADD_CATEGORIES:
             return {
                 ...state,
-                categories: action.categories,
+                items: action.categories,
             };
         default:
             return state;

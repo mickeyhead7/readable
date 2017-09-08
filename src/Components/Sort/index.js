@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 import './styles.css';
@@ -12,7 +13,7 @@ class Sort extends Component {
     };
 
     render () {
-        const { field, direction } = this.props;
+        const { field, direction } = this.props.sort;
 
         return (
             <div className="sort">
@@ -35,4 +36,10 @@ class Sort extends Component {
     }
 }
 
-export default Sort;
+function mapStateToProps ({ sort }) {
+    return {
+        sort,
+    };
+};
+
+export default connect(mapStateToProps)(Sort);
