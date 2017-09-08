@@ -3,7 +3,9 @@ import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import ThePosts from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
-import { addCategories, addPosts, setSort } from '../../Actions';
+import { addCategories } from '../../Actions/categories';
+import { addPosts } from '../../Actions/posts';
+import { setSort } from '../../Actions/sort';
 
 class Posts extends Component {
     componentDidMount () {
