@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import Sort from '../../Components/Sort';
 import PostPartial from '../Post/Partial';
@@ -5,8 +6,14 @@ import PostPartial from '../Post/Partial';
 import './styles.css';
 
 class Posts extends Component {
+    static propTypes = {
+        category: propTypes.string,
+        onSort: propTypes.func.isRequired,
+        posts: propTypes.array.isRequired,
+    };
+
     render () {
-        const { category = null, onSort = () => {}, posts = [] } = this.props;
+        const { category = null, onSort, posts } = this.props;
 
         return (
             <div className="category">

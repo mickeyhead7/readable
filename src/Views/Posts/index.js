@@ -1,13 +1,23 @@
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
+import { setSort } from '../../Actions/sort';
 import ThePosts from '../../Components/Posts';
+import { addPosts } from '../../Actions/posts';
 import Navigation from '../../Components/Navigation';
 import { addCategories } from '../../Actions/categories';
-import { addPosts } from '../../Actions/posts';
-import { setSort } from '../../Actions/sort';
 
 class Posts extends Component {
+    static propTypes = {
+        categories: propTypes.array.isRequired,
+        category: propTypes.string,
+        fetchCategories: propTypes.func.isRequired,
+        onSort: propTypes.func.isRequired,
+        posts: propTypes.array.isRequired,
+        sort: propTypes.object.isRequired,
+    };
+
     componentDidMount () {
         const { fetchCategories, sort } = this.props;
 
@@ -51,8 +61,8 @@ class Posts extends Component {
 
 function mapStateToProps({ categories, posts, sort }) {
     return {
-        categories: categories.items,
-        posts: posts.items,
+        categories: categories.items || [],
+        posts: posts.items || [],
         sort,
     };
 }

@@ -1,9 +1,15 @@
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 import './styles.css';
 
 class Sort extends Component {
+    static propTypes = {
+        onSort: propTypes.func.isRequired,
+        sort: propTypes.object.isRequired,
+    };
+
     handleChangeField = (event) => {
         this.props.onSort(event.target.value, this.directionInput.value);
     };

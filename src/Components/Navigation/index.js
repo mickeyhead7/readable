@@ -1,10 +1,15 @@
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
 import './styles.css';
 
 class Navigation extends Component {
+    static propTypes = {
+        categories: propTypes.array.isRequired,
+    };
+
     render () {
         const { categories = [] } = this.props;
 
@@ -27,7 +32,7 @@ class Navigation extends Component {
 
 function mapStateToProps({ categories }) {
     return {
-        categories: categories.items,
+        categories: categories.items || [],
     };
 }
 
