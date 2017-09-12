@@ -1,57 +1,84 @@
+import sortBy from 'sort-by';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import ThePosts from '../../Components/Posts';
-import { addPosts } from '../../Actions/posts';
+import { addPosts, updatePost } from '../../Actions/posts';
 import Navigation from '../../Components/Navigation';
-import { addCategories } from '../../Actions/categories';
 
+/**
+ * @description Posts listing
+ */
 class Posts extends Component {
     static propTypes = {
-        categories: propTypes.array.isRequired,
-        category: propTypes.string,
-        fetchCategories: propTypes.func.isRequired,
+        downvotePost: propTypes.func.isRequired,
+        fetchPosts: propTypes.func.isRequired,
         onSort: propTypes.func.isRequired,
-        posts: propTypes.array.isRequired,
+        posts: propTypes.object.isRequired,
         sort: propTypes.object.isRequired,
+        upvotePost: propTypes.func.isRequired,
     };
 
+    /**
+     * @description Fetch the posts on mount
+     */
     componentDidMount () {
-        const { fetchCategories, sort } = this.props;
+        const { fetchPosts, match } = this.props;
+        const { category } = match.params;
 
-        fetchCategories();
-        this.getSortedPosts(sort.field, sort.direction);
+        fetchPosts(category);
     }
 
-    fetchPosts = () => {
-        const { category } = this.props;
+    /**
+     * @description Fetch new category posts if a category change is detected
+     * @param prevProps Previous props
+     */
+    componentDidUpdate (prevProps) {
+        const { fetchPosts, match } = this.props;
+        const { category } = match.params;
 
-        if (category) {
-            return API.fetchPosts(category);
-        } else {
-            return API.fetchAllPosts();
+        if (prevProps.match.params.category !== category) {
+            fetchPosts(category);
         }
+    }
+
+    /**
+     * @description Sort the posts
+     * @returns {*}
+     */
+    sortPosts = () => {
+        const { posts, sort } = this.props;
+
+        if (!posts.items) {
+            return [];
+        }
+
+        const field = ['timestamp', 'voteScore'].includes(sort.field) ? sort.field : 'timestamp';
+        const direction = sort.direction === 'asc' ? '' : '-';
+
+        return posts.items.sort(sortBy(`${direction}${field}`));
     };
 
-    getSortedPosts = (field, direction) => {
-        this.fetchPosts().then(posts => {
-            this.props.onSort(posts, field, direction);
-        });
-    };
-
+    /**
+     * @description Renders the posts listing
+     * @returns {XML}
+     */
     render () {
-        const { category, posts } = this.props;
+        const { downvotePost, onSort, upvotePost } = this.props;
+        const sortedPosts = this.sortPosts();
 
         return (
             <div>
                 <Navigation />
                 <main>
                     <ThePosts
-                        category={category}
-                        onSort={this.getSortedPosts}
-                        posts={posts}
+                        // category={category}
+                        onDownvote={downvotePost}
+                        onSort={onSort}
+                        onUpvote={upvotePost}
+                        posts={sortedPosts}
                     />
                 </main>
             </div>
@@ -59,23 +86,60 @@ class Posts extends Component {
     }
 }
 
-function mapStateToProps({ categories, posts, sort }) {
+/**
+ * @description Maps store to local props
+ * @param posts Posts store
+ * @param sort Sort store
+ * @returns {{posts: *, sort: *}}
+ */
+function mapStateToProps({ posts, sort }) {
     return {
-        categories: categories.items || [],
-        posts: posts.items || [],
+        posts: posts,
         sort,
     };
 }
 
+/**
+ * @description Maps dispatch to local props
+ * @param dispatch Store dispatch method
+ */
 const mapDispatchToProps = dispatch => ({
-    fetchCategories: () => {
-        API.fetchCategories().then(categories => {
-            dispatch(addCategories(categories));
+    /**
+     * @description Downvote a post
+     * @param id Post id
+     */
+    downvotePost: (id) => {
+        API.postVote(id, 'downVote').then(post => {
+            dispatch(updatePost(post));
         });
     },
-    onSort: (posts, field, direction) => {
+    /**
+     * @description Fetch posts
+     * @param category Category filter
+     */
+    fetchPosts: (category = null) => {
+        const result = category ? API.fetchPosts(category) : API.fetchAllPosts();
+
+        result.then(posts => {
+            dispatch(addPosts(posts));
+        });
+    },
+    /**
+     * @description on-sort event
+     * @param field Sort field
+     * @param direction Sort direction
+     */
+    onSort: (field, direction) => {
         dispatch(setSort(field, direction));
-        dispatch(addPosts(posts, field, direction));
+    },
+    /**
+     * @description Upvote a post
+     * @param id Post id
+     */
+    upvotePost: (id) => {
+        API.postVote(id, 'upVote').then(post => {
+            dispatch(updatePost(post));
+        });
     },
 });
 

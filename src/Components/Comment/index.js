@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import Vote from '../Vote';
 
+/**
+ * @description Comment
+ */
 class Comment extends Component {
+    /**
+     * @description Renders the comment component
+     * @returns {XML}
+     */
     render () {
         return (
             <article>

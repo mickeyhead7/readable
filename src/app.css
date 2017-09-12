@@ -29,6 +29,14 @@ section {
     display: block;
 }
 
+a {
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 h1,
 h2,
 h3,
@@ -53,4 +61,20 @@ li {
     body {
         font-size: 1em;
     }
+}
+
+button,
+.button {
+    background: #e4e4e4;
+    border: 0;
+    cursor: pointer;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    margin: 0;
+    padding: 0.5em 1em;
+}
+
+button:hover,
+.button:hover {
+    background: #aaa;
 }

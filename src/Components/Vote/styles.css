@@ -1,0 +1,22 @@
+.vote {}
+
+.vote-options {
+    display: flex;
+    margin: 0 -1em;
+}
+
+.vote-score {
+    line-height: 2em;
+    list-style: none;
+}
+
+.vote-option {
+    list-style: none;
+    margin: 0 1em;
+}
+
+.vote-button {}
+
+.upvote {}
+
+.downvote {}

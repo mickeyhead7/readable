@@ -8,3 +8,11 @@
     box-shadow: 0 0 .375em #ccc;
     transform: scale(1.05);
 }
+
+.post-partial-meta {
+    margin: 0 0 1em;
+}
+
+.post-partial-body {
+    margin: 0 0 1em;
+}

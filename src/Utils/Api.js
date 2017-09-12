@@ -1,16 +1,47 @@
 const uri = 'http://localhost:5001';
-const options = {
+const headers = {
     headers: {
         'Authorization': 'whatever-you-want',
-    }
+        'Content-Type': 'application/json',
+    },
+};
+const post = {
+    method: 'POST',
 };
 
-export const fetchCategories = () => fetch(`${uri}/categories`, options)
+/**
+ * @description Fetches the categories
+ */
+export const fetchCategories = () => fetch(`${uri}/categories`, {
+    ...headers,
+})
     .then(res => res.json())
     .then(res => res.categories);
 
-export const fetchAllPosts = () => fetch(`${uri}/posts`, options)
+/**
+ * @description Fetches all the posts
+ */
+export const fetchAllPosts = () => fetch(`${uri}/posts`, {
+    ...headers
+})
     .then(res => res.json());
 
-export const fetchPosts = category => fetch(`${uri}/${category}/posts`, options)
+/**
+ * @description Fetches the posts for a given category
+ */
+export const fetchPosts = category => fetch(`${uri}/${category}/posts`, {
+    ...headers
+})
+    .then(res => res.json());
+
+/**
+ * @description Perform a vote on a post
+ */
+export const postVote = (id, option) =>  fetch(`${uri}/posts/${id}`, {
+    ...headers,
+    ...post,
+    body: JSON.stringify({
+        option,
+    })
+})
     .then(res => res.json());
