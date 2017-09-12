@@ -1,4 +1,7 @@
 import propTypes from 'prop-types';
+import FaMehO from 'react-icons/lib/fa/meh-o';
+import FaFrownO from 'react-icons/lib/fa/frown-o';
+import FaSmileO from 'react-icons/lib/fa/smile-o';
 import FaThumbsUp from 'react-icons/lib/fa/thumbs-up';
 import FaThumbsDown from 'react-icons/lib/fa/thumbs-down';
 import React, { Component } from 'react';
@@ -40,11 +43,22 @@ class Vote extends Component {
      */
     render () {
         const { voteScore } = this.props;
+        let Icon;
+
+        if (voteScore == 0) {
+            Icon = FaMehO;
+        } else if (voteScore > 0) {
+            Icon = FaSmileO;
+        } else {
+            Icon = FaFrownO;
+        }
+
         return (
             <div className="vote">
                 <ul className="vote-options">
                     <li className="vote-score">
-                        Vote score: {voteScore}
+                        <span>Vote score: {voteScore}</span>
+                        <Icon />
                     </li>
                     <li className="vote-option">
                         <button className="vote-button upvote" onClick={this.handleUpvote}>
