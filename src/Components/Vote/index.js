@@ -45,7 +45,7 @@ class Vote extends Component {
         const { voteScore } = this.props;
         let Icon;
 
-        if (voteScore == 0) {
+        if (voteScore === 0) {
             Icon = FaMehO;
         } else if (voteScore > 0) {
             Icon = FaSmileO;
