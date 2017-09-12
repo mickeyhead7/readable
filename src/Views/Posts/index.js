@@ -5,18 +5,18 @@ import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import ThePosts from '../../Components/Posts';
-import { addPosts, updatePost } from '../../Actions/posts';
 import Navigation from '../../Components/Navigation';
+import { addPosts, updatePost } from '../../Actions/posts';
 
 /**
- * @description Posts listing
+ * @description Posts listing view
  */
 class Posts extends Component {
     static propTypes = {
         downvotePost: propTypes.func.isRequired,
         fetchPosts: propTypes.func.isRequired,
         onSort: propTypes.func.isRequired,
-        posts: propTypes.object.isRequired,
+        posts: propTypes.array,
         sort: propTypes.object.isRequired,
         upvotePost: propTypes.func.isRequired,
     };
@@ -46,23 +46,23 @@ class Posts extends Component {
 
     /**
      * @description Sort the posts
-     * @returns {*}
+     * @returns {*} Sorted posts
      */
     sortPosts = () => {
         const { posts, sort } = this.props;
 
-        if (!posts.items) {
+        if (!posts) {
             return [];
         }
 
         const field = ['timestamp', 'voteScore'].includes(sort.field) ? sort.field : 'timestamp';
-        const direction = sort.direction === 'asc' ? '' : '-';
+        const direction = sort.direction === 'desc' ? '-' : '';
 
-        return posts.items.sort(sortBy(`${direction}${field}`));
+        return posts.sort(sortBy(`${direction}${field}`));
     };
 
     /**
-     * @description Renders the posts listing
+     * @description Renders the posts listing view
      * @returns {XML}
      */
     render () {
@@ -94,7 +94,7 @@ class Posts extends Component {
  */
 function mapStateToProps({ posts, sort }) {
     return {
-        posts: posts,
+        posts: posts.posts,
         sort,
     };
 }

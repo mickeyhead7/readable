@@ -1,0 +1,47 @@
+.post-full {}
+
+.post-full-backlink {
+    padding: 1em 2em;
+}
+
+.post-full-article {
+    background: #fff;
+    margin: 0 0 2em;
+    padding: 1em 2em 1.5em;
+}
+
+.post-full-header {}
+
+.post-full-meta {
+    margin: 0 0 2em;
+}
+
+.post-full-content {
+    background: #fff;
+}
+
+.post-full-body {
+    border-bottom: 1px solid #e4e4e4;
+    padding: 0 0 2em;
+    margin: 0 0 2em;
+}
+
+.post-full-comment-form {
+    margin: 0 2em 2em;
+}
+
+.post-full-comments {
+    margin: 0 2em 2em;
+}
+
+.post-full-comment {
+    border-top: 1px solid #e4e4e4;
+    margin: 2em 0 0;
+    padding: 2em 0 0;
+}
+
+.post-full-comment:first-child {
+    border-top: 0;
+    margin: 0;
+    padding: 0;
+}

@@ -6,7 +6,14 @@ import { Route} from 'react-router-dom';
 
 import './app.css';
 
+/**
+ * @description Application
+ */
 class App extends Component {
+    /**
+     * @description Renders the application
+     * @returns {XML}
+     */
     render() {
         return (
             <div className="app">

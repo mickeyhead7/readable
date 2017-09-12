@@ -1,5 +1,8 @@
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const ADD_POSTS = 'ADD_POSTS';
-export const SORT_POSTS = 'SORT_POSTS';
+export const SET_CURRENT_POST = 'SET_CURRENT_POST';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT'
 export const UPDATE_POST = 'UPDATE_POST';
 
 /**
@@ -23,5 +26,33 @@ export const updatePost = (post) => {
     return {
         type: UPDATE_POST,
         post,
+    };
+};
+
+export const setCurrentPost = (post) => {
+    return {
+        type: SET_CURRENT_POST,
+        post,
+    };
+};
+
+export const addComment = (comment) => {
+    return {
+        type: ADD_COMMENT,
+        comment,
+    };
+};
+
+export const addComments = (comments) => {
+    return {
+        type: ADD_COMMENTS,
+        comments,
+    };
+};
+
+export const updateComment = (comment) => {
+    return {
+        type: UPDATE_COMMENT,
+        comment,
     };
 };

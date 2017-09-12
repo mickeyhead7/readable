@@ -16,6 +16,7 @@ body {
     background-color: #efefef;
     font-family: Helvetica, Arial, sans-serif;
     font-size: .875em;
+    line-height: 1.5;
     min-width: 20em;
     margin: 0;
     padding: 0;
@@ -57,24 +58,40 @@ li {
     padding: 0;
 }
 
-@media screen and (min-width: 60.0625em) {
-    body {
-        font-size: 1em;
-    }
+input,
+textarea,
+select {
+    background-color: #fff;
+    border: 1px solid #e4e4e4;
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+    padding: 1em;
+    width: 100%;
 }
 
 button,
 .button {
-    background: #e4e4e4;
+    background-color: #64a816;
     border: 0;
+    color: #fff;
     cursor: pointer;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 1em;
+    font-weight: bold;
+    line-height: 1.5;
     margin: 0;
     padding: 0.5em 1em;
 }
 
 button:hover,
 .button:hover {
-    background: #aaa;
+    background-color: #508a00;
+}
+
+@media screen and (min-width: 60.0625em) {
+    body {
+        font-size: 1em;
+    }
 }

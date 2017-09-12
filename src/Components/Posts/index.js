@@ -32,13 +32,15 @@ class Posts extends Component {
                 <Sort
                     onSort={onSort}
                 />
-                <section className="category-posts">
-                    {posts.map(post => (
-                        <div className="category-post" key={post.id}>
-                            <PostPartial {...post} onDownvote={onDownvote} onUpvote={onUpvote} />
-                        </div>
-                    ))}
-                </section>
+                {posts.length ? (
+                    <section className="category-posts">
+                        {posts.map(post => (
+                            <div className="category-post" key={post.id}>
+                                <PostPartial {...post} onDownvote={onDownvote} onUpvote={onUpvote} />
+                            </div>
+                        ))}
+                    </section>
+                ) : null}
             </div>
         );
     }

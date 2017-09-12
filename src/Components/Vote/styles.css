@@ -2,21 +2,44 @@
 
 .vote-options {
     display: flex;
+    flex-wrap: wrap;
     margin: 0 -1em;
 }
 
 .vote-score {
-    line-height: 2em;
+    line-height: 2.5em;
     list-style: none;
+    margin: 0 1em 0.5em;
+    width: 100%;
 }
 
 .vote-option {
     list-style: none;
-    margin: 0 1em;
+    margin: 0 1em 0.5em;
+    width: calc(50% - 2em);
 }
 
-.vote-button {}
+.vote-button {
+    width: 100%;
+}
 
 .upvote {}
 
-.downvote {}
+.downvote {
+    background-color: #c9322c;
+}
+
+.downvote:hover {
+    background-color: #A62621;
+}
+
+.downvote svg,
+.upvote svg {
+    fill: #fff;
+}
+
+@media screen and (min-width: 40.0625em) {
+    .vote-option {
+        width: auto;
+    }
+}

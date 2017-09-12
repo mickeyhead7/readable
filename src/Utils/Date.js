@@ -9,3 +9,11 @@ import moment from 'moment';
 export const format = (timestamp, format) => {
     return moment(timestamp).format(format);
 };
+
+/**
+ * @description Gets the current unix timestamp
+ * @returns {number} Unix timestamp
+ */
+export const getUnixTimestamp = () => {
+    return moment().unix();
+};
