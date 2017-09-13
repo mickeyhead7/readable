@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import ThePosts from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
+import { addCategories } from '../../Actions/categories';
 import { addPosts, updatePost } from '../../Actions/posts';
 
 /**
@@ -25,9 +26,10 @@ class Posts extends Component {
      * @description Fetch the posts on mount
      */
     componentDidMount () {
-        const { fetchPosts, match } = this.props;
+        const { fetchCategories, fetchPosts, match } = this.props;
         const { category } = match.params;
 
+        fetchCategories();
         fetchPosts(category);
     }
 
@@ -111,6 +113,14 @@ const mapDispatchToProps = dispatch => ({
     downvotePost: (id) => {
         API.postVote(id, 'downVote').then(post => {
             dispatch(updatePost(post));
+        });
+    },
+    /**
+     * @description Fetch the categories
+     */
+    fetchCategories: () => {
+        API.fetchCategories().then(categories => {
+            dispatch(addCategories(categories));
         });
     },
     /**

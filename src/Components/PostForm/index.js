@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React  from 'react';
 
-class PostForm extends Component {
-    render () {
-        return (
-            <form>
-                Post form
-            </form>
-        );
-    }
+const PostForm = props => {
+    return (
+        <form>
+            Post form
+        </form>
+    );
 }
 
 export default PostForm;

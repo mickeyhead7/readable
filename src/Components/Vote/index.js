@@ -1,81 +1,76 @@
+import React from 'react';
 import propTypes from 'prop-types';
 import FaMehO from 'react-icons/lib/fa/meh-o';
 import FaFrownO from 'react-icons/lib/fa/frown-o';
 import FaSmileO from 'react-icons/lib/fa/smile-o';
 import FaThumbsUp from 'react-icons/lib/fa/thumbs-up';
 import FaThumbsDown from 'react-icons/lib/fa/thumbs-down';
-import React, { Component } from 'react';
 
 import './styles.css';
 
 /**
  * @description Vote
  */
-class Vote extends Component {
-    static propTypes = {
-        id: propTypes.string.isRequired,
-        onDownvote: propTypes.func.isRequired,
-        onUpvote: propTypes.func.isRequired,
-        voteScore: propTypes.number.isRequired,
-    };
+const Vote = props => {
+    const { id, onDownvote, onUpvote, voteScore } = props;
 
     /**
      * @description Handles the downvote action
      */
-    handleDownvote = () => {
-        const { onDownvote, id } = this.props;
-
+    const handleDownvote = () => {
         onDownvote(id);
     };
 
     /**
      * @description Handles the upvote action
      */
-    handleUpvote = () => {
-        const { onUpvote, id } = this.props;
-
+    const handleUpvote = () => {
         onUpvote(id);
     };
 
     /**
-     * @description Renders the vote component
+     * @description Returns a smiley based on the voteScore prop
      * @returns {XML}
      */
-    render () {
-        const { voteScore } = this.props;
-        let Icon;
-
+    const smiley = () => {
         if (voteScore === 0) {
-            Icon = FaMehO;
+            return <FaMehO />;
         } else if (voteScore > 0) {
-            Icon = FaSmileO;
+            return <FaSmileO />;
         } else {
-            Icon = FaFrownO;
+            return <FaFrownO />;
         }
+    };
 
-        return (
-            <div className="vote">
-                <ul className="vote-options">
-                    <li className="vote-score">
-                        <span>Vote score: {voteScore}</span>
-                        <Icon />
-                    </li>
-                    <li className="vote-option">
-                        <button className="vote-button upvote" onClick={this.handleUpvote}>
-                            <FaThumbsUp />
-                            <span>Upvote</span>
-                        </button>
-                    </li>
-                    <li className="vote-option">
-                        <button className="vote-button downvote" onClick={this.handleDownvote}>
-                            <FaThumbsDown />
-                            <span>Downvote</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="vote">
+            <ul className="vote-options">
+                <li className="vote-score">
+                    <span>Vote score: {voteScore}</span>
+                    {smiley()}
+                </li>
+                <li className="vote-option">
+                    <button className="vote-button upvote" onClick={handleUpvote}>
+                        <FaThumbsUp />
+                        <span>Upvote</span>
+                    </button>
+                </li>
+                <li className="vote-option">
+                    <button className="vote-button downvote" onClick={handleDownvote}>
+                        <FaThumbsDown />
+                        <span>Downvote</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    );
+};
+
+Vote.propTypes = {
+    id: propTypes.string.isRequired,
+    onDownvote: propTypes.func.isRequired,
+    onUpvote: propTypes.func.isRequired,
+    voteScore: propTypes.number.isRequired,
+};
 
 export default Vote;

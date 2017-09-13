@@ -1,7 +1,7 @@
+import React from 'react';
 import uuid from 'uuid/v4';
 import domPurify from 'dompurify';
 import propTypes from 'prop-types';
-import React, { Component } from 'react';
 import * as Date from '../../../Utils/Date';
 
 import './styles.css';
@@ -9,24 +9,20 @@ import './styles.css';
 /**
  * @description Comment form
  */
-class CommentForm extends Component {
-    static propTypes = {
-        onSubmit: propTypes.func.isRequired,
-        postId: propTypes.string.isRequired,
-    };
+const CommentForm = props => {
+    const { onSubmit, postId } = props;
 
     /**
      * @description Handles comment submission
      * @param event Submit event
      */
-    handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
 
-        const { onSubmit, postId } = this.props;
-
+        const commentInput = document.getElementById('comment');
         const comment = {
             author: 'thingthree',
-            body: domPurify.sanitize(this.comment.value),
+            body: domPurify.sanitize(commentInput.value),
             id: uuid(),
             parentId: postId,
             timestamp: Date.getUnixTimestamp(),
@@ -35,23 +31,22 @@ class CommentForm extends Component {
         onSubmit(comment);
     };
 
-    /**
-     * @description renders the comment form component
-     * @returns {XML}
-     */
-    render () {
-        return (
-            <form className="comment-form" onSubmit={this.handleSubmit}>
-                <header className="comment-form-header">
-                    <h2>Add a comment</h2>
-                </header>
-                <div className="comment-form-content">
-                    <textarea className="comment-form-input" ref={input => this.comment = input} />
-                    <button>Submit comment</button>
-                </div>
-            </form>
-        );
-    }
-}
+    return (
+        <form className="comment-form" onSubmit={handleSubmit}>
+            <header className="comment-form-header">
+                <h2>Add a comment</h2>
+            </header>
+            <div className="comment-form-content">
+                <textarea className="comment-form-input" id="comment" />
+                <button>Submit comment</button>
+            </div>
+        </form>
+    );
+};
+
+CommentForm.propTypes = {
+    onSubmit: propTypes.func.isRequired,
+    postId: propTypes.string.isRequired,
+};
 
 export default CommentForm;

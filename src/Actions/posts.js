@@ -18,8 +18,8 @@ export const addPosts = (posts) => {
 };
 
 /**
- * Updates a post in the store
- * @param post Post to update
+ * @description Updates a post in the store
+ * @param post Post object to update
  * @returns {{type: string, post: *}}
  */
 export const updatePost = (post) => {
@@ -29,6 +29,11 @@ export const updatePost = (post) => {
     };
 };
 
+/**
+ * @description Sets the current post in the store
+ * @param post Post object to add
+ * @returns {{type: string, post: *}}
+ */
 export const setCurrentPost = (post) => {
     return {
         type: SET_CURRENT_POST,
@@ -36,6 +41,11 @@ export const setCurrentPost = (post) => {
     };
 };
 
+/**
+ * @description Adds a comment to the store
+ * @param comment C`omment object to add
+ * @returns {{type: string, comment: *}}
+ */
 export const addComment = (comment) => {
     return {
         type: ADD_COMMENT,
@@ -43,6 +53,11 @@ export const addComment = (comment) => {
     };
 };
 
+/**
+ * @description Adds comments to the store
+ * @param comments List of comments
+ * @returns {{type: string, comments: *}}
+ */
 export const addComments = (comments) => {
     return {
         type: ADD_COMMENTS,
@@ -50,6 +65,11 @@ export const addComments = (comments) => {
     };
 };
 
+/**
+ * @description Updates a comment in the store
+ * @param comment Comment object
+ * @returns {{type: string, comment: *}}
+ */
 export const updateComment = (comment) => {
     return {
         type: UPDATE_COMMENT,
