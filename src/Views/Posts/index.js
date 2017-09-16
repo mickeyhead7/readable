@@ -7,15 +7,18 @@ import { setSort } from '../../Actions/sort';
 import ThePosts from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
 import { addCategories } from '../../Actions/categories';
-import { addPosts, updatePost } from '../../Actions/posts';
+import { addPosts, votePost } from '../../Actions/posts';
 
 /**
  * @description Posts listing view
  */
 class Posts extends Component {
     static propTypes = {
+        categories: propTypes.array,
         downvotePost: propTypes.func.isRequired,
+        fetchCategories: propTypes.func.isRequired,
         fetchPosts: propTypes.func.isRequired,
+        match: propTypes.object.isRequired,
         onSort: propTypes.func.isRequired,
         posts: propTypes.array,
         sort: propTypes.object.isRequired,
@@ -68,15 +71,16 @@ class Posts extends Component {
      * @returns {XML}
      */
     render () {
-        const { downvotePost, onSort, upvotePost } = this.props;
+        const { categories, downvotePost, onSort, upvotePost } = this.props;
         const sortedPosts = this.sortPosts();
 
         return (
             <div>
-                <Navigation />
+                <Navigation
+                    categories={categories}
+                />
                 <main>
                     <ThePosts
-                        // category={category}
                         onDownvote={downvotePost}
                         onSort={onSort}
                         onUpvote={upvotePost}
@@ -94,8 +98,9 @@ class Posts extends Component {
  * @param sort Sort store
  * @returns {{posts: *, sort: *}}
  */
-function mapStateToProps({ posts, sort }) {
+function mapStateToProps({ categories, posts, sort }) {
     return {
+        categories: categories.categories,
         posts: posts.posts,
         sort,
     };
@@ -111,15 +116,15 @@ const mapDispatchToProps = dispatch => ({
      * @param id Post id
      */
     downvotePost: (id) => {
-        API.postVote(id, 'downVote').then(post => {
-            dispatch(updatePost(post));
+        return API.postVote(id, 'downVote').then(post => {
+            dispatch(votePost(post));
         });
     },
     /**
      * @description Fetch the categories
      */
     fetchCategories: () => {
-        API.fetchCategories().then(categories => {
+        return API.fetchCategories().then(categories => {
             dispatch(addCategories(categories));
         });
     },
@@ -130,7 +135,7 @@ const mapDispatchToProps = dispatch => ({
     fetchPosts: (category = null) => {
         const result = category ? API.fetchPosts(category) : API.fetchAllPosts();
 
-        result.then(posts => {
+        return result.then(posts => {
             dispatch(addPosts(posts));
         });
     },
@@ -147,8 +152,8 @@ const mapDispatchToProps = dispatch => ({
      * @param id Post id
      */
     upvotePost: (id) => {
-        API.postVote(id, 'upVote').then(post => {
-            dispatch(updatePost(post));
+        return API.postVote(id, 'upVote').then(post => {
+            dispatch(votePost(post));
         });
     },
 });

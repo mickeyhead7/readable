@@ -4,6 +4,11 @@
     padding: 1em 2em;
 }
 
+.post-full-backlink span {
+    margin: 0 0 0 0.5em;
+    vertical-align: middle;
+}
+
 .post-full-article {
     background: #fff;
     margin: 0 0 2em;

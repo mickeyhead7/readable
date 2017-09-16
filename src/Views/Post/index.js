@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import PostFull from '../../Components/Post/Full';
-import { addComment, addComments, setCurrentPost, updateComment, updatePost } from '../../Actions/posts';
+import { setViewPost, votePost } from '../../Actions/posts';
+import { addComment, addComments, updateComment } from '../../Actions/comments';
 
 /**
  * @description Post view
@@ -87,12 +88,13 @@ class Post extends Component {
 /**
  * @description Maps store to local props
  * @param posts Posts store
- * @returns {{post}}
+ * @param sort Sort store
+ * @returns {{comments: (*, post: *, sort: *}}
  */
-const mapStateToProps = ({ sort, posts }) => {
+const mapStateToProps = ({ comments, posts, sort }) => {
     return {
-        comments: posts.comments,
-        post: posts.currentPost,
+        comments: comments.comments,
+        post: posts.view,
         sort,
     };
 };
@@ -108,7 +110,7 @@ const mapDispatchToProps = dispatch => {
          * @param comment
          */
         onSubmitComment: comment => {
-            API.addComment(comment).then(comment => {
+            return API.addComment(comment).then(comment => {
                 dispatch(addComment(comment));
             });
         },
@@ -117,7 +119,7 @@ const mapDispatchToProps = dispatch => {
          * @param id Comment id
          */
         onDownvoteComment: (id) => {
-            API.commentVote(id, 'downVote').then(comment => {
+            return API.commentVote(id, 'downVote').then(comment => {
                 dispatch(updateComment(comment));
             });
         },
@@ -126,8 +128,8 @@ const mapDispatchToProps = dispatch => {
          * @param id Post id
          */
         onDownvotePost: (id) => {
-            API.postVote(id, 'downVote').then(post => {
-                dispatch(updatePost(post));
+            return API.postVote(id, 'downVote').then(post => {
+                dispatch(votePost(post));
             });
         },
         /**
@@ -135,7 +137,7 @@ const mapDispatchToProps = dispatch => {
          * @param id Post id
          */
         fetchComments: id => {
-            API.fetchComments(id).then(comments => {
+            return API.fetchComments(id).then(comments => {
                 dispatch(addComments(comments));
             });
         },
@@ -144,8 +146,8 @@ const mapDispatchToProps = dispatch => {
          * @param id Post id
          */
         fetchPost: id => {
-            API.fetchPost(id).then(post => {
-                dispatch(setCurrentPost(post));
+            return API.fetchPost(id).then(post => {
+                dispatch(setViewPost(post));
             });
         },
         /**
@@ -153,7 +155,7 @@ const mapDispatchToProps = dispatch => {
          * @param id Comment id
          */
         onUpvoteComment: (id) => {
-            API.commentVote(id, 'upVote').then(comment => {
+            return API.commentVote(id, 'upVote').then(comment => {
                 dispatch(updateComment(comment));
             });
         },
@@ -162,8 +164,8 @@ const mapDispatchToProps = dispatch => {
          * @param id Post id
          */
         onUpvotePost: (id) => {
-            API.postVote(id, 'upVote').then(post => {
-                dispatch(updatePost(post));
+            return API.postVote(id, 'upVote').then(post => {
+                dispatch(votePost(post));
             });
         },
     };

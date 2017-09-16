@@ -19,28 +19,34 @@ const CommentForm = props => {
     const handleSubmit = event => {
         event.preventDefault();
 
-        const commentInput = document.getElementById('comment');
+        const bodyInput = document.getElementById('body');
         const comment = {
             author: 'thingthree',
-            body: domPurify.sanitize(commentInput.value),
+            body: domPurify.sanitize(bodyInput.value),
             id: uuid(),
             parentId: postId,
             timestamp: Date.getUnixTimestamp(),
         };
 
-        onSubmit(comment);
+        onSubmit(comment).then(() => {
+            bodyInput.value = '';
+        });
     };
 
     return (
-        <form className="comment-form" onSubmit={handleSubmit}>
+        <div className="comment-form" onSubmit={handleSubmit}>
             <header className="comment-form-header">
                 <h2>Add a comment</h2>
             </header>
-            <div className="comment-form-content">
-                <textarea className="comment-form-input" id="comment" />
-                <button>Submit comment</button>
-            </div>
-        </form>
+            <form className="comment-form-content">
+                <div className="form-row">
+                    <textarea id="body" placeholder="Start writing..." />
+                </div>
+                <div className="form-row">
+                    <button>Submit comment</button>
+                </div>
+            </form>
+        </div>
     );
 };
 

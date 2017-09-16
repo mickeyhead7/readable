@@ -4,9 +4,6 @@
 
 .comment-form-header {}
 
-.comment-form-content {}
-
-.comment-form-input {
-    height: 10em;
+.comment-form-content {
     margin: 0 0 2em;
 }

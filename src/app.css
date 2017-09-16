@@ -71,6 +71,10 @@ select {
     width: 100%;
 }
 
+textarea {
+    min-height: 10em;
+}
+
 button,
 .button {
     background-color: #64a816;
@@ -88,6 +92,10 @@ button,
 button:hover,
 .button:hover {
     background-color: #508a00;
+}
+
+.form-row {
+    margin: 0 0 2em;
 }
 
 @media screen and (min-width: 60.0625em) {

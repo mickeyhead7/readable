@@ -1,6 +1,5 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './styles.css';
@@ -22,6 +21,12 @@ const Navigation = props => {
                         <Link className="nav-link" to={`/${category.path}`}>{category.name}</Link>
                     </li>
                 ))}
+                <li className="nav-item new-post">
+                    <Link className="nav-link" to="/post/new">
+
+                        <span>add a new post</span>
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
@@ -31,15 +36,4 @@ Navigation.propTypes = {
     categories: propTypes.array,
 };
 
-/**
- * @description Maps store to local props
- * @param categories Categories store
- * @returns {{categories}}
- */
-const mapStateToProps = ({ categories }) => {
-    return {
-        categories: categories.categories,
-    };
-};
-
-export default connect(mapStateToProps)(Navigation);
+export default Navigation;

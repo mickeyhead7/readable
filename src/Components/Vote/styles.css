@@ -7,16 +7,23 @@
 }
 
 .vote-score {
-    line-height: 2.5em;
     list-style: none;
-    margin: 0 1em 0.5em;
+    margin: 0 1em .5em;
     width: 100%;
+}
+
+.vote-score span {
+    vertical-align: middle;
+}
+
+.vote-score svg {
+    margin: 0 0 0 .5em;
 }
 
 .vote-option {
     list-style: none;
-    margin: 0 1em 0.5em;
-    width: calc(50% - 2em);
+    margin: 0 1em .5em;
+    width: calc(50% - 1em);
 }
 
 .vote-button {

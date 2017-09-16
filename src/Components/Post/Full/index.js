@@ -55,12 +55,6 @@ const Post = props => {
                     </footer>
                 </div>
             </article>
-            <section className="post-full-comment-form">
-                <CommentForm
-                    onSubmit={onSubmitComment}
-                    postId={id}
-                />
-            </section>
             {comments.length ? (
                 <section className="post-full-comments">
                     <header>
@@ -79,6 +73,12 @@ const Post = props => {
                     </section>
                 </section>
             ) : null}
+            <section className="post-full-comment-form">
+                <CommentForm
+                    onSubmit={onSubmitComment}
+                    postId={id}
+                />
+            </section>
         </div>
     ) : null;
 };

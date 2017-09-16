@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "dompurify": "^1.0.2",
     "fetch": "^1.1.0",
+    "just-debounce": "^1.0.0",
     "moment": "^2.18.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

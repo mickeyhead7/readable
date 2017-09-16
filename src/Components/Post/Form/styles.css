@@ -1,0 +1,19 @@
+.post-form {}
+
+.post-form-backlink {
+    padding: 1em 2em;
+}
+
+.post-form-backlink span {
+    margin: 0 0 0 0.5em;
+    vertical-align: middle;
+}
+
+.post-form-body {
+    background-color: #fff;
+    padding: 2em;
+}
+
+.post-form-content {
+    margin: 0 0 2em;
+}

@@ -19,7 +19,19 @@
 }
 
 .nav-link:hover {
-    background: #e4e4e4;
+    background-color: #e4e4e4;
+}
+
+.new-post {
+    margin-left: auto;
+}
+
+.new-post .nav-link {
+    background-color: #e4e4e4;
+}
+
+.new-post .nav-link:hover {
+    background-color: #ccc;
 }
 
 @media screen and (min-width: 40.0625em) {

@@ -5,7 +5,7 @@ const headers = {
         'Content-Type': 'application/json',
     },
 };
-const post = {
+const postParams = {
     method: 'POST',
 };
 
@@ -41,10 +41,10 @@ export const fetchPosts = category => fetch(`${uri}/${category}/posts`, {
  */
 export const postVote = (id, option) =>  fetch(`${uri}/posts/${id}`, {
     ...headers,
-    ...post,
+    ...postParams,
     body: JSON.stringify({
         option,
-    })
+    }),
 })
     .then(res => res.json());
 
@@ -63,8 +63,15 @@ export const fetchPost = id => fetch(`${uri}/posts/${id}`, {
  */
 export const addComment = comment => fetch(`${uri}/comments`, {
     ...headers,
-    ...post,
-    body: JSON.stringify(comment)
+    ...postParams,
+    body: JSON.stringify(comment),
+})
+    .then(res => res.json());
+
+export const addPost = post => fetch(`${uri}/posts`, {
+    ...headers,
+    ...postParams,
+    body: JSON.stringify(post),
 })
     .then(res => res.json());
 
@@ -75,10 +82,10 @@ export const addComment = comment => fetch(`${uri}/comments`, {
  */
 export const commentVote = (id, option) =>  fetch(`${uri}/comments/${id}`, {
     ...headers,
-    ...post,
+    ...postParams,
     body: JSON.stringify({
         option,
-    })
+    }),
 })
     .then(res => res.json());
 

@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_COMMENTS, ADD_POSTS, SET_CURRENT_POST, UPDATE_COMMENT, UPDATE_POST } from '../Actions/posts';
+import { ADD_POSTS, SET_EDIT_POST, SET_VIEW_POST, VOTE_POST } from '../Actions/posts';
 
 /**
  * @description Posts reducer
@@ -8,42 +8,26 @@ import { ADD_COMMENT, ADD_COMMENTS, ADD_POSTS, SET_CURRENT_POST, UPDATE_COMMENT,
  */
 const posts = (state = {}, action) => {
     switch (action.type) {
-        case ADD_COMMENT:
-            return {
-                ...state,
-                comments: state.comments.concat([ action.comment ]),
-            };
-        case ADD_COMMENTS:
-            return {
-                ...state,
-                comments: action.comments,
-            };
         case ADD_POSTS:
             return {
                 ...state,
                 posts: action.posts,
             };
-        case SET_CURRENT_POST:
+        case SET_EDIT_POST:
             return {
                 ...state,
-                currentPost: action.post,
+                edit: action.post,
             };
-        case UPDATE_COMMENT:
-            const comments = state.comments || [];
-            
+        case SET_VIEW_POST:
             return {
                 ...state,
-                comments: comments.map(comment => {
-                    if (comment.id === action.comment.id) {
-                        comment = action.comment;
-                    }
-
-                    return comment;
-                }),
+                view: action.post,
             };
-        case UPDATE_POST:
+        case VOTE_POST:
             const posts = state.posts || [];
-            const currentPost = action.post;
+            const view = state.view && state.view.id === action.post.id
+                ? state.view = action.post
+                : state.view;
 
             return {
                 ...state,
@@ -54,7 +38,7 @@ const posts = (state = {}, action) => {
 
                     return post;
                 }),
-                currentPost,
+                view,
             };
         default:
             return state;
