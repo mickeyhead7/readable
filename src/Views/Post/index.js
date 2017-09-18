@@ -87,6 +87,7 @@ class Post extends Component {
 
 /**
  * @description Maps store to local props
+ * @param comments Comments store
  * @param posts Posts store
  * @param sort Sort store
  * @returns {{comments: (*, post: *, sort: *}}

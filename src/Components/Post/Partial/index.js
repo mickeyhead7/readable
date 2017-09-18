@@ -32,6 +32,11 @@ const Post = props => {
                     onDownvote={onDownvote}
                     voteScore={voteScore}
                 />
+                <ul>
+                    <li>
+                        <Link to={`/post/${id}/edit`}>Edit</Link>
+                    </li>
+                </ul>
             </footer>
         </article>
     );

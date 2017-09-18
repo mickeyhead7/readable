@@ -14,23 +14,26 @@ class Message extends Component {
         timeout: propTypes.number,
     };
 
-    activate = debounce(() => {
-        const { id } = this.props;
-        let message = document.getElementById(id);
+    state = {
+        active: true,
+    };
 
-        if (message) {
-            message.classList.remove('message-active');
-        }
+    activate = () => {
+        this.setState({
+            active: true,
+        });
+    };
+
+    deactivate = debounce(() => {
+        this.setState({
+            active: false,
+        });
     }, this.props.timeout);
 
-    componentDidUpdate() {
-        const { id } = this.props;
-        let message = document.getElementById(id);
-
-        this.activate();
-
-        if (message) {
-            message.classList.add('message-active');
+    componentWillReceiveProps (newProps) {
+        if (this.props.id !== newProps.id) {
+            this.activate();
+            this.deactivate();
         }
     }
 
@@ -39,6 +42,7 @@ class Message extends Component {
         const classes = classNames({
             message: true,
             [`message-${level}`]: !!level,
+            'message-active': !!body && this.state.active,
         });
 
         return (

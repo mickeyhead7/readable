@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
 import * as Date from '../../Utils/Date';
 import React, { Component } from 'react';
-import Message from '../../Components/Message';
 import PostForm from '../../Components/Post/Form';
 import { setEditPost } from '../../Actions/posts';
 import { updateMessage } from '../../Actions/messages';
@@ -15,6 +14,7 @@ class Edit extends Component {
     static propTypes = {
         addPost: propTypes.func.isRequired,
         categories: propTypes.array,
+        clearPost: propTypes.func.isRequired,
         fetchCategories: propTypes.func.isRequired,
         fetchPost: propTypes.func.isRequired,
         id: propTypes.string,
@@ -23,44 +23,52 @@ class Edit extends Component {
     };
 
     componentDidMount () {
-        const { fetchCategories, fetchPost, match } = this.props;
+        const { clearPost, fetchCategories, fetchPost, match } = this.props;
         const { post_id } = match.params;
 
         fetchCategories();
 
         if (post_id) {
             fetchPost(post_id);
+        } else {
+            clearPost();
         }
     }
 
-    submitPost = event => {
-        event.preventDefault();
-
-        const { addPost, post, updateMessage } = this.props;
-        const categoryInput = document.getElementById('category');
-        const bodyInput = document.getElementById('body');
-        const titleInput = document.getElementById('title');
-        const messageId = uuid();
-        const data = {
-            author: 'thingthree',
-            body: domPurify.sanitize(bodyInput.value),
-            category: categoryInput.value,
-            id: post ? post.id : uuid(),
-            timestamp: Date.getUnixTimestamp(),
-            title: domPurify.sanitize(titleInput.value),
-        };
+    validatePost = data => {
+        const { updateMessage } = this.props;
 
         if (!(data.body && data.category && data.title)) {
             updateMessage({
                 body: 'Please enter all the post details',
-                id: messageId,
+                id: uuid(),
                 level: 'error',
             });
 
+            return false;
+        }
+
+        return true;
+    };
+
+    submitPost = data => {
+        const { addPost, updateMessage } = this.props;
+        const messageId = uuid();
+
+        if (!this.validatePost(data)) {
             return;
         }
 
-        addPost(data).then(() => {
+        const postData = {
+            author: 'thingthree',
+            body: domPurify.sanitize(data.body),
+            category: domPurify.sanitize(data.category),
+            id: data.id ? data.id : uuid(),
+            timestamp: Date.getUnixTimestamp(),
+            title: domPurify.sanitize(data.title),
+        };
+
+        addPost(postData).then(() => {
             updateMessage({
                 body: 'Post successfully saved. Feel free to keep editing',
                 id: messageId,
@@ -81,7 +89,6 @@ class Edit extends Component {
         return (
             <div>
                 <main>
-                    <Message />
                     <PostForm
                         {...post}
                         categories={categories}
@@ -121,6 +128,9 @@ const mapDispatchToProps = dispatch => {
             return API.addPost(post).then(post => {
                 dispatch(setEditPost(post));
             });
+        },
+        clearPost: () => {
+            dispatch(setEditPost(null));
         },
         /**
          * @description Fetch the categories
