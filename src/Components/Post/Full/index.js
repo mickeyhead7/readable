@@ -1,4 +1,5 @@
 import React  from 'react';
+import Sort from '../../Sort';
 import Vote from '../../Vote';
 import propTypes from 'prop-types';
 import Comment from '../../Comment/Full';
@@ -9,6 +10,12 @@ import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 
 import './style.css';
 
+/**
+ * @description Renders the post view
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const Post = props => {
     const {
         author,
@@ -16,8 +23,10 @@ const Post = props => {
         category,
         comments,
         id,
+        onDeleteComment,
         onDownvoteComment,
         onDownvotePost,
+        onSort,
         onSubmitComment,
         onUpvoteComment,
         onUpvotePost,
@@ -25,7 +34,7 @@ const Post = props => {
         title,
         voteScore
     } = props;
-    
+
     return id ? (
         <div className="post-full">
             <section className="post-full-backlink">
@@ -60,11 +69,16 @@ const Post = props => {
                     <header>
                         <h2>Comments</h2>
                     </header>
-                    <section>
+                    <Sort
+                        item="comments"
+                        onSort={onSort}
+                    />
+                    <section className="post-full-list">
                         {comments.map(comment => (
                             <div className="post-full-comment" key={comment.id}>
                                 <Comment
                                     {...comment}
+                                    onDeleteComment={onDeleteComment}
                                     onDownvote={onDownvoteComment}
                                     onUpvote={onUpvoteComment}
                                 />
@@ -76,7 +90,6 @@ const Post = props => {
             <section className="post-full-comment-form">
                 <CommentForm
                     onSubmit={onSubmitComment}
-                    postId={id}
                 />
             </section>
         </div>
@@ -85,8 +98,10 @@ const Post = props => {
 
 Post.propTypes = {
     comments: propTypes.array.isRequired,
+    onDeleteComment: propTypes.func.isRequired,
     onDownvoteComment: propTypes.func.isRequired,
     onDownvotePost: propTypes.func.isRequired,
+    onSort: propTypes.func.isRequired,
     onSubmitComment: propTypes.func.isRequired,
     onUpvoteComment: propTypes.func.isRequired,
     onUpvotePost: propTypes.func.isRequired,

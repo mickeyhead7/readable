@@ -5,6 +5,9 @@ import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 
 import './styles.css';
 
+/**
+ * @description Add/edit post form
+ */
 class PostForm extends Component {
     static propTypes = {
         body: propTypes.string,
@@ -21,6 +24,10 @@ class PostForm extends Component {
         title: '',
     };
 
+    /**
+     * @description Updates the form state when the component receives new props
+     * @param nextProps Received props
+     */
     componentWillReceiveProps (nextProps) {
         const { body = '', category = '', id = '', title = '' } = nextProps;
 
@@ -32,6 +39,10 @@ class PostForm extends Component {
         });
     }
 
+    /**
+     * @description Handles an input change event
+     * @param event Input event
+     */
     handleInputChange = (event)  => {
         const name = event.target.getAttribute('name');
 
@@ -40,12 +51,20 @@ class PostForm extends Component {
         });
     };
 
+    /**
+     * @description Handles the form submission event
+     * @param event Submission event
+     */
     handleSubmit = event => {
         event.preventDefault();
 
         this.props.onSubmit(this.state);
     };
 
+    /**
+     * @description Renders the post form
+     * @returns {XML}
+     */
     render () {
         const { categories, id } = this.props;
         const { body, category, title } = this.state;
@@ -74,14 +93,14 @@ class PostForm extends Component {
                         <div className="form-row">
                             <label htmlFor="category">Choose a category</label>
                             <select name="category" onChange={this.handleInputChange} value={category}>
-                                <option>Select a category...</option>
+                                <option value="">Select a category...</option>
                                 {categories.map(category => (
                                     <option key={category.path} value={category.path}>{category.name}</option>
                                 ))}
                             </select>
                         </div>
                         <div className="form-row">
-                            <button>{id ? 'Update post' : 'Add post'}</button>
+                            <button className="button">{id ? 'Update post' : 'Add post'}</button>
                         </div>
                     </form>
                 </div>

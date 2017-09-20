@@ -16,3 +16,16 @@
 .post-partial-body {
     margin: 0 0 1em;
 }
+
+.post-partial-vote {
+    margin: 0 0 1em;
+}
+
+.post-partial-actions {
+    display: flex;
+    margin: 0 -1em;
+}
+
+.post-partial-action {
+    list-style: none;
+}

@@ -32,10 +32,13 @@ section {
 }
 
 a {
+    color: #004e72;
     text-decoration: underline;
 }
 
-a:hover {
+a:hover,
+a:focus {
+    color: #003755;
     text-decoration: none;
 }
 
@@ -99,7 +102,23 @@ select {
     padding: 1em 2em 1em 1em;
 }
 
-button,
+button {
+    background-color: transparent;
+    border: 0;
+    color: #004e72;
+    cursor: pointer;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    text-decoration: underline;
+    padding: 0;
+}
+
+button:hover,
+button:focus {
+    color: #003755;
+    text-decoration: none;
+}
+
 .button {
     background-color: #64a816;
     border: 0;
@@ -111,11 +130,13 @@ button,
     line-height: 1.5;
     margin: 0;
     padding: 0.5em 1em;
+    text-decoration: none;
 }
 
-button:hover,
-.button:hover {
+.button:hover,
+.button:focus {
     background-color: #508a00;
+    color: #fff;
 }
 
 .form-row {

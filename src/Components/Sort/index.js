@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import './styles.css';
 
 /**
- * @description Sort menu
+ * @description Sort menu, persistent across application
  */
 const Sort = props => {
-    const { field, direction } = props.sort;
+    const { field, direction } = props.sort[props.item];
 
     /**
-     * @description hadles a change in the field selection
+     * @description handles a change in the field selection
      * @param event Field change event
      */
     const handleChangeField = (event) => {
@@ -76,6 +76,7 @@ const Sort = props => {
 };
 
 Sort.propTypes = {
+    item: propTypes.string.isRequired,
     onSort: propTypes.func.isRequired,
     sort: propTypes.object.isRequired,
 };
@@ -85,7 +86,7 @@ Sort.propTypes = {
  * @param sort Sort store
  * @returns {{sort: *}}
  */
-function mapStateToProps ({ sort }) {
+const mapStateToProps = ({ sort }) => {
     return {
         sort,
     };

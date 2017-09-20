@@ -10,7 +10,22 @@ import './styles.css';
  * @description Post partial
  */
 const Post = props => {
-    const { author, body, category, id, onDownvote, onUpvote, timestamp, title, voteScore } = props;
+    const {
+        author,
+        body,
+        category,
+        id,
+        onDeletePost,
+        onDownvote,
+        onUpvote,
+        timestamp,
+        title,
+        voteScore
+    } = props;
+
+    const handleDeletePost = () => {
+        onDeletePost(id);
+    };
 
     return (
         <article className="post-partial">
@@ -26,15 +41,20 @@ const Post = props => {
                 {body}
             </section>
             <footer>
-                <Vote
-                    id={id}
-                    onUpvote={onUpvote}
-                    onDownvote={onDownvote}
-                    voteScore={voteScore}
-                />
-                <ul>
-                    <li>
+                <div className="post-partial-vote">
+                    <Vote
+                        id={id}
+                        onUpvote={onUpvote}
+                        onDownvote={onDownvote}
+                        voteScore={voteScore}
+                    />
+                </div>
+                <ul className="post-partial-actions">
+                    <li className="post-partial-action">
                         <Link to={`/post/${id}/edit`}>Edit</Link>
+                    </li>
+                    <li className="post-partial-action">
+                        <button onClick={handleDeletePost}>Delete</button>
                     </li>
                 </ul>
             </footer>
@@ -47,6 +67,7 @@ Post.propTypes = {
     body: propTypes.string.isRequired,
     category: propTypes.string,
     id: propTypes.string.isRequired,
+    onDeletePost: propTypes.func.isRequired,
     onDownvote: propTypes.func,
     onUpvote: propTypes.func,
     timestamp: propTypes.number.isRequired,

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
-import ThePosts from '../../Components/Posts';
+import PostList from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
 import { addCategories } from '../../Actions/categories';
-import { addPosts, votePost } from '../../Actions/posts';
+import { addPosts, deletePost, votePost } from '../../Actions/posts';
 
 /**
  * @description Posts listing view
@@ -15,12 +15,13 @@ import { addPosts, votePost } from '../../Actions/posts';
 class Posts extends Component {
     static propTypes = {
         categories: propTypes.array,
+        deletePost: propTypes.func.isRequired,
         downvotePost: propTypes.func.isRequired,
         fetchCategories: propTypes.func.isRequired,
         fetchPosts: propTypes.func.isRequired,
         match: propTypes.object.isRequired,
-        onSort: propTypes.func.isRequired,
         posts: propTypes.array,
+        setSort: propTypes.func.isRequired,
         sort: propTypes.object.isRequired,
         upvotePost: propTypes.func.isRequired,
     };
@@ -71,8 +72,8 @@ class Posts extends Component {
      * @returns {XML}
      */
     render () {
-        const { categories, downvotePost, onSort, upvotePost } = this.props;
-        const sortedPosts = this.sortPosts();
+        const { categories, deletePost, downvotePost, setSort, upvotePost } = this.props;
+        const posts = this.sortPosts();
 
         return (
             <div>
@@ -80,11 +81,12 @@ class Posts extends Component {
                     categories={categories}
                 />
                 <main>
-                    <ThePosts
+                    <PostList
+                        onDeletePost={deletePost}
                         onDownvote={downvotePost}
-                        onSort={onSort}
+                        onSort={setSort}
                         onUpvote={upvotePost}
-                        posts={sortedPosts}
+                        posts={posts}
                     />
                 </main>
             </div>
@@ -94,6 +96,7 @@ class Posts extends Component {
 
 /**
  * @description Maps store to local props
+ * @param categories Categories store
  * @param posts Posts store
  * @param sort Sort store
  * @returns {{posts: *, sort: *}}
@@ -102,7 +105,7 @@ function mapStateToProps({ categories, posts, sort }) {
     return {
         categories: categories.categories,
         posts: posts.posts,
-        sort,
+        sort: sort.posts,
     };
 }
 
@@ -111,11 +114,16 @@ function mapStateToProps({ categories, posts, sort }) {
  * @param dispatch Store dispatch method
  */
 const mapDispatchToProps = dispatch => ({
+    deletePost: id => {
+        return API.deletePost(id).then(() => {
+            dispatch(deletePost(id));
+        });
+    },
     /**
      * @description Downvote a post
      * @param id Post id
      */
-    downvotePost: (id) => {
+    downvotePost: id => {
         return API.postVote(id, 'downVote').then(post => {
             dispatch(votePost(post));
         });
@@ -140,18 +148,18 @@ const mapDispatchToProps = dispatch => ({
         });
     },
     /**
-     * @description on-sort event
+     * @description Sets the sort
      * @param field Sort field
      * @param direction Sort direction
      */
-    onSort: (field, direction) => {
-        dispatch(setSort(field, direction));
+    setSort: (field, direction) => {
+        dispatch(setSort('posts', field, direction));
     },
     /**
      * @description Upvote a post
      * @param id Post id
      */
-    upvotePost: (id) => {
+    upvotePost: id => {
         return API.postVote(id, 'upVote').then(post => {
             dispatch(votePost(post));
         });

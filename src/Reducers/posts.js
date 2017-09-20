@@ -1,4 +1,12 @@
-import { ADD_POSTS, SET_EDIT_POST, SET_VIEW_POST, VOTE_POST } from '../Actions/posts';
+import {
+    ADD_POST,
+    ADD_POSTS,
+    DELETE_POST,
+    SET_EDIT_POST,
+    SET_VIEW_POST,
+    UPDATE_POST,
+    VOTE_POST
+} from '../Actions/posts';
 
 /**
  * @description Posts reducer
@@ -8,10 +16,20 @@ import { ADD_POSTS, SET_EDIT_POST, SET_VIEW_POST, VOTE_POST } from '../Actions/p
  */
 const posts = (state = {}, action) => {
     switch (action.type) {
+        case ADD_POST:
+            return {
+                ...state,
+                posts: state.posts.concat([ action.post ]),
+            };
         case ADD_POSTS:
             return {
                 ...state,
-                posts: action.posts,
+                posts: action.posts.filter(post => !post.deleted),
+            };
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post.id !== action.id),
             };
         case SET_EDIT_POST:
             return {
@@ -22,6 +40,17 @@ const posts = (state = {}, action) => {
             return {
                 ...state,
                 view: action.post,
+            };
+        case UPDATE_POST:
+            return {
+                ...state,
+                posts: state.posts.map(post => {
+                    if (post.id === action.post.id) {
+                        return action.post;
+                    }
+
+                    return post;
+                }),
             };
         case VOTE_POST:
             const posts = state.posts || [];

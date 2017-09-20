@@ -50,13 +50,13 @@ const Vote = props => {
                     {smiley()}
                 </li>
                 <li className="vote-option">
-                    <button className="vote-button upvote" onClick={handleUpvote}>
+                    <button className="button vote-button upvote" onClick={handleUpvote}>
                         <FaThumbsUp />
                         <span>Upvote</span>
                     </button>
                 </li>
                 <li className="vote-option">
-                    <button className="vote-button downvote" onClick={handleDownvote}>
+                    <button className="button vote-button downvote" onClick={handleDownvote}>
                         <FaThumbsDown />
                         <span>Downvote</span>
                     </button>

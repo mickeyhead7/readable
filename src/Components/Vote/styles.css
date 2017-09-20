@@ -30,18 +30,18 @@
     width: 100%;
 }
 
-.upvote {}
+.vote-button.upvote {}
 
-.downvote {
+.vote-button.downvote {
     background-color: #c9322c;
 }
 
-.downvote:hover {
+.vote-button.downvote:hover {
     background-color: #A62621;
 }
 
-.downvote svg,
-.upvote svg {
+.vote-button.downvote svg,
+.vote-button.upvote svg {
     fill: #fff;
 }
 

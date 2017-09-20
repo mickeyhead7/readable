@@ -9,21 +9,29 @@ import './styles.css';
  * @description Posts listing
  */
 const Posts = props => {
-    const { category = null, onDownvote, onSort, onUpvote, posts } = props;
+    const { category = null, onDeletePost, onDownvote, onSort, onUpvote, posts } = props;
 
     return (
-        <div className="category">
-            <header className="category-heading">
+        <div className="posts">
+            <header className="posts-heading">
                 <h1>{category ? category.name : 'Recent posts'}</h1>
             </header>
-            <Sort
-                onSort={onSort}
-            />
+            <section className="posts-actions">
+                <Sort
+                    item="posts"
+                    onSort={onSort}
+                />
+            </section>
             {posts.length ? (
-                <section className="category-posts">
+                <section className="posts-list">
                     {posts.map(post => (
-                        <div className="category-post" key={post.id}>
-                            <PostPartial {...post} onDownvote={onDownvote} onUpvote={onUpvote} />
+                        <div className="posts-item" key={post.id}>
+                            <PostPartial
+                                {...post}
+                                onDeletePost={onDeletePost}
+                                onDownvote={onDownvote}
+                                onUpvote={onUpvote}
+                            />
                         </div>
                     ))}
                 </section>
@@ -34,10 +42,11 @@ const Posts = props => {
 
 Posts.propTypes = {
     category: propTypes.string,
+    onDeletePost: propTypes.func,
     onDownvote: propTypes.func,
-    onSort: propTypes.func.isRequired,
+    onSort: propTypes.func,
     onUpvote: propTypes.func,
-    posts: propTypes.array.isRequired,
+    posts: propTypes.array,
 };
 
 export default Posts;

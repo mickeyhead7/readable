@@ -5,8 +5,14 @@ import { SET_SORT } from '../Actions/sort';
  * @type {{field: string, direction: string}}
  */
 const initialState = {
-    field: 'timestamp',
-    direction: 'desc',
+    posts: {
+        field: 'timestamp',
+        direction: 'desc',
+    },
+    comments: {
+        field: 'voteScore',
+        direction: 'desc',
+    },
 };
 
 /**
@@ -19,8 +25,11 @@ const sort = (state = initialState, action) => {
     switch (action.type) {
         case SET_SORT:
             return {
-                field: action.field,
-                direction: action.direction,
+                ...state,
+                [action.item]: {
+                    field: action.field,
+                    direction: action.direction,
+                },
             };
         default:
             return state;

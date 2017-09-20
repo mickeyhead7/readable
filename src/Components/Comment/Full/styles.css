@@ -5,3 +5,16 @@
 .comment-body {}
 
 .comment-footer {}
+
+.comment-vote {
+    margin: 0 0 1em;
+}
+
+.comment-actions {
+    display: flex;
+    margin: 0 -1em;
+}
+
+.comment-action {
+    list-style: none;
+}

@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_COMMENTS, UPDATE_COMMENT } from '../Actions/comments';
+import { ADD_COMMENT, ADD_COMMENTS, DELETE_COMMENT, UPDATE_COMMENT } from '../Actions/comments';
 
 /**
  * @description Comments reducer
@@ -17,6 +17,11 @@ const comments = (state = {}, action) => {
             return {
                 ...state,
                 comments: action.comments,
+            };
+        case DELETE_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.filter(comment => comment.id !== action.id),
             };
         case UPDATE_COMMENT:
             const comments = state.comments || [];

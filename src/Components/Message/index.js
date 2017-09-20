@@ -6,6 +6,9 @@ import React, { Component } from 'react';
 
 import './styles.css';
 
+/**
+ * @description Message
+ */
 class Message extends Component {
     static propTypes = {
         body: propTypes.string,
@@ -18,18 +21,28 @@ class Message extends Component {
         active: true,
     };
 
+    /**
+     * @description Activates the message
+     */
     activate = () => {
         this.setState({
             active: true,
         });
     };
 
+    /**
+     * @description Deactivates the message
+     */
     deactivate = debounce(() => {
         this.setState({
             active: false,
         });
     }, this.props.timeout);
 
+    /**
+     * @description Activates when the component receives new props
+     * @param newProps
+     */
     componentWillReceiveProps (newProps) {
         if (this.props.id !== newProps.id) {
             this.activate();
@@ -37,6 +50,10 @@ class Message extends Component {
         }
     }
 
+    /**
+     * @description Renders the message
+     * @returns {XML}
+     */
     render () {
         const { body, id, level } = this.props;
         const classes = classNames({
@@ -53,6 +70,11 @@ class Message extends Component {
     }
 }
 
+/**
+ * @description Maps the store state to the compoent props
+ * @param messages Messgaes store
+ * @returns {*}
+ */
 const mapStateToProps = ({ messages }) => {
     return messages;
 };

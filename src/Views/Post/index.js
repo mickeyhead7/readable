@@ -1,11 +1,16 @@
+import uuid from 'uuid/v4';
 import sortBy from 'sort-by';
+import domPurify from 'dompurify';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as API from '../../Utils/Api';
+import * as Date from '../../Utils/Date';
 import React, { Component } from 'react';
+import { setSort } from '../../Actions/sort';
 import PostFull from '../../Components/Post/Full';
+import { updateMessage } from '../../Actions/messages';
 import { setViewPost, votePost } from '../../Actions/posts';
-import { addComment, addComments, updateComment } from '../../Actions/comments';
+import { addComment, addComments, deleteComment, updateComment } from '../../Actions/comments';
 
 /**
  * @description Post view
@@ -13,18 +18,21 @@ import { addComment, addComments, updateComment } from '../../Actions/comments';
 class Post extends Component {
     static propTypes = {
         comments: propTypes.array,
-        onDownvoteComment: propTypes.func.isRequired,
-        onDownvotePost: propTypes.func.isRequired,
+        deleteComment: propTypes.func.isRequired,
+        downvoteComment: propTypes.func.isRequired,
+        downvotePost: propTypes.func.isRequired,
         fetchComments: propTypes.func.isRequired,
         fetchPost: propTypes.func.isRequired,
+        setSort: propTypes.func.isRequired,
         onSubmitComment: propTypes.func.isRequired,
         post: propTypes.object,
-        onUpvoteComment: propTypes.func.isRequired,
-        onUpvotePost: propTypes.func.isRequired,
+        upvoteComment: propTypes.func.isRequired,
+        upvotePost: propTypes.func.isRequired,
+        updateMessage: propTypes.func.isRequired,
     };
 
     /**
-     * @description Fetches the post on nount
+     * @description Fetches the post on mount
      */
     componentDidMount () {
         const { fetchComments, fetchPost, match } = this.props;
@@ -52,17 +60,55 @@ class Post extends Component {
     };
 
     /**
+     * @description Validates a comment
+     * @param data Comment data
+     * @returns {boolean}
+     */
+    validateComment = data => {
+        return !!data.body;
+    };
+
+    /**
+     * @description Submits a new comment
+     * @param data
+     */
+    submitComment = data => {
+        const { post, onSubmitComment, updateMessage } = this.props;
+
+        if (!this.validateComment(data)) {
+            updateMessage({
+                body: 'Please enter a comment',
+                id: uuid(),
+                level: 'error',
+            });
+
+            return Promise.reject();
+        }
+
+        const commentData = {
+            author: 'thingthree',
+            body: domPurify.sanitize(data.body),
+            id: uuid(),
+            parentId: post.id,
+            timestamp: Date.getUnixTimestamp(),
+        };
+
+        return onSubmitComment(commentData);
+    };
+
+    /**
      * @description Renders the post view
      * @returns {XML}
      */
     render () {
         const {
+            deleteComment,
+            downvoteComment,
+            downvotePost,
             post,
-            onDownvoteComment,
-            onDownvotePost,
-            onSubmitComment,
-            onUpvoteComment,
-            onUpvotePost,
+            setSort,
+            upvoteComment,
+            upvotePost,
         } = this.props;
         
         const sortedComments = this.sortComments();
@@ -73,11 +119,13 @@ class Post extends Component {
                     <PostFull
                         {...post}
                         comments={sortedComments || []}
-                        onDownvotePost={onDownvotePost}
-                        onUpvotePost={onUpvotePost}
-                        onSubmitComment={onSubmitComment}
-                        onDownvoteComment={onDownvoteComment}
-                        onUpvoteComment={onUpvoteComment}
+                        onDeleteComment={deleteComment}
+                        onDownvotePost={downvotePost}
+                        onUpvotePost={upvotePost}
+                        onSort={setSort}
+                        onSubmitComment={this.submitComment}
+                        onDownvoteComment={downvoteComment}
+                        onUpvoteComment={upvoteComment}
                     />
                 ) : null}
             </main>
@@ -96,7 +144,7 @@ const mapStateToProps = ({ comments, posts, sort }) => {
     return {
         comments: comments.comments,
         post: posts.view,
-        sort,
+        sort: sort.comments,
     };
 };
 
@@ -107,19 +155,21 @@ const mapStateToProps = ({ comments, posts, sort }) => {
 const mapDispatchToProps = dispatch => {
     return {
         /**
-         * @description Adds a comment to the store
-         * @param comment
+         * @description Deletes a selected comment
+         * @param id Comment id
+         * @returns {Promise.<TResult>}
          */
-        onSubmitComment: comment => {
-            return API.addComment(comment).then(comment => {
-                dispatch(addComment(comment));
+        deleteComment: id => {
+            return API.deleteComment(id).then(() => {
+                dispatch(deleteComment(id));
             });
         },
         /**
          * @description Downvote a comment
          * @param id Comment id
+         * @returns {Promise.<TResult>}
          */
-        onDownvoteComment: (id) => {
+        downvoteComment: (id) => {
             return API.commentVote(id, 'downVote').then(comment => {
                 dispatch(updateComment(comment));
             });
@@ -127,8 +177,9 @@ const mapDispatchToProps = dispatch => {
         /**
          * @description Downvote a post
          * @param id Post id
+         * @returns {Promise.<TResult>}
          */
-        onDownvotePost: (id) => {
+        downvotePost: (id) => {
             return API.postVote(id, 'downVote').then(post => {
                 dispatch(votePost(post));
             });
@@ -136,6 +187,7 @@ const mapDispatchToProps = dispatch => {
         /**
          * @description Fetches the comments for a given post
          * @param id Post id
+         * @returns {Promise.<TResult>}
          */
         fetchComments: id => {
             return API.fetchComments(id).then(comments => {
@@ -145,6 +197,7 @@ const mapDispatchToProps = dispatch => {
         /**
          * Fetches a given post and adds it to the store
          * @param id Post id
+         * @returns {Promise.<TResult>}
          */
         fetchPost: id => {
             return API.fetchPost(id).then(post => {
@@ -152,21 +205,50 @@ const mapDispatchToProps = dispatch => {
             });
         },
         /**
-         * @description Upvote a comment
-         * @param id Comment id
+         * @description Adds a comment to the store
+         * @param comment
+         * @returns {Promise.<TResult>}
          */
-        onUpvoteComment: (id) => {
-            return API.commentVote(id, 'upVote').then(comment => {
-                dispatch(updateComment(comment));
+        onSubmitComment: comment => {
+            return API.addComment(comment).then(comment => {
+                dispatch(addComment(comment));
             });
+        },
+        /**
+         * @description Sets the sort
+         * @param field Sort field
+         * @param direction Sort direction
+         */
+        setSort: (field, direction) => {
+            return dispatch(setSort('comments', field, direction));
+        },
+        /**
+         * @description Sets the app message
+         * @param body Message body
+         * @param level Message level
+         * @returns {*}
+         */
+        updateMessage: ({ body, level, id, timeout }) => {
+            return dispatch(updateMessage({ body, level, id, timeout }));
         },
         /**
          * @description Upvote a post
          * @param id Post id
+         * @returns {Promise.<TResult>}
          */
-        onUpvotePost: (id) => {
+        upvotePost: (id) => {
             return API.postVote(id, 'upVote').then(post => {
                 dispatch(votePost(post));
+            });
+        },
+        /**
+         * @description Upvote a comment
+         * @param id Comment id
+         * @returns {Promise.<TResult>}
+         */
+        upvoteComment: (id) => {
+            return API.commentVote(id, 'upVote').then(comment => {
+                dispatch(updateComment(comment));
             });
         },
     };
