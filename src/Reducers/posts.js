@@ -2,11 +2,15 @@ import {
     ADD_POST,
     ADD_POSTS,
     DELETE_POST,
-    SET_EDIT_POST,
-    SET_VIEW_POST,
+    SET_CURRENT_POST,
     UPDATE_POST,
     VOTE_POST
 } from '../Actions/posts';
+
+const initialState = {
+    posts: [],
+    current: null,
+};
 
 /**
  * @description Posts reducer
@@ -14,7 +18,7 @@ import {
  * @param action Action to reduce
  * @returns {*}
  */
-const posts = (state = {}, action) => {
+const posts = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
             return {
@@ -31,15 +35,10 @@ const posts = (state = {}, action) => {
                 ...state,
                 posts: state.posts.filter(post => post.id !== action.id),
             };
-        case SET_EDIT_POST:
+        case SET_CURRENT_POST:
             return {
                 ...state,
-                edit: action.post,
-            };
-        case SET_VIEW_POST:
-            return {
-                ...state,
-                view: action.post,
+                current: action.post,
             };
         case UPDATE_POST:
             return {
@@ -51,23 +50,23 @@ const posts = (state = {}, action) => {
 
                     return post;
                 }),
+                current: action.post,
             };
         case VOTE_POST:
-            const posts = state.posts || [];
-            const view = state.view && state.view.id === action.post.id
-                ? state.view = action.post
-                : state.view;
+            const curent = state.curent && state.curent.id === action.post.id
+                ? state.curent = action.post
+                : state.curent;
 
             return {
                 ...state,
-                posts: posts.map(post => {
+                posts: state.posts.map(post => {
                     if (post.id === action.post.id) {
                         post = action.post;
                     }
 
                     return post;
                 }),
-                view,
+                curent,
             };
         default:
             return state;

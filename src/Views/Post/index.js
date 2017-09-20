@@ -3,14 +3,20 @@ import sortBy from 'sort-by';
 import domPurify from 'dompurify';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as API from '../../Utils/Api';
 import * as Date from '../../Utils/Date';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import PostFull from '../../Components/Post/Full';
 import { updateMessage } from '../../Actions/messages';
-import { setViewPost, votePost } from '../../Actions/posts';
-import { addComment, addComments, deleteComment, updateComment } from '../../Actions/comments';
+import { downvotePost, fetchPost, upvotePost } from '../../Actions/posts';
+import {
+    addComment,
+    deleteComment,
+    downvoteComment,
+    fetchComments,
+    updateComment,
+    upvoteComment,
+} from '../../Actions/comments';
 
 /**
  * @description Post view
@@ -159,7 +165,7 @@ class Post extends Component {
 const mapStateToProps = ({ comments, posts, sort }) => {
     return {
         comments: comments.comments,
-        post: posts.view,
+        post: posts.current,
         sort: sort.comments,
     };
 };
@@ -176,9 +182,7 @@ const mapDispatchToProps = dispatch => {
          * @returns {Promise.<TResult>}
          */
         addComment: comment => {
-            return API.addComment(comment).then(comment => {
-                dispatch(addComment(comment));
-            });
+            return dispatch(addComment(comment));
         },
         /**
          * @description Deletes a selected comment
@@ -186,39 +190,31 @@ const mapDispatchToProps = dispatch => {
          * @returns {Promise.<TResult>}
          */
         deleteComment: id => {
-            return API.deleteComment(id).then(() => {
-                dispatch(deleteComment(id));
-            });
+            return dispatch(deleteComment(id));
         },
         /**
          * @description Downvote a comment
          * @param id Comment id
          * @returns {Promise.<TResult>}
          */
-        downvoteComment: (id) => {
-            return API.commentVote(id, 'downVote').then(comment => {
-                dispatch(updateComment(comment));
-            });
+        downvoteComment: id => {
+            return dispatch(downvoteComment(id));
         },
         /**
          * @description Downvote a post
          * @param id Post id
          * @returns {Promise.<TResult>}
          */
-        downvotePost: (id) => {
-            return API.postVote(id, 'downVote').then(post => {
-                dispatch(votePost(post));
-            });
+        downvotePost: id => {
+            return dispatch(downvotePost(id));
         },
         /**
          * @description Fetches the comments for a given post
          * @param id Post id
          * @returns {Promise.<TResult>}
          */
-        fetchComments: id => {
-            return API.fetchComments(id).then(comments => {
-                dispatch(addComments(comments));
-            });
+        fetchComments: postId => {
+            return dispatch(fetchComments(postId));
         },
         /**
          * Fetches a given post and adds it to the store
@@ -226,9 +222,7 @@ const mapDispatchToProps = dispatch => {
          * @returns {Promise.<TResult>}
          */
         fetchPost: id => {
-            return API.fetchPost(id).then(post => {
-                dispatch(setViewPost(post));
-            });
+            return dispatch(fetchPost(id));
         },
         /**
          * @description Sets the sort
@@ -244,9 +238,7 @@ const mapDispatchToProps = dispatch => {
          * @returns {Promise.<TResult>}
          */
         updateComment: comment => {
-            return API.updateComment(comment).then(comment => {
-                dispatch(updateComment(comment));
-            });
+            return dispatch(updateComment(comment));
         },
         /**
          * @description Sets the app message
@@ -262,20 +254,16 @@ const mapDispatchToProps = dispatch => {
          * @param id Post id
          * @returns {Promise.<TResult>}
          */
-        upvotePost: (id) => {
-            return API.postVote(id, 'upVote').then(post => {
-                dispatch(votePost(post));
-            });
+        upvotePost: id => {
+            return dispatch(upvotePost(id));
         },
         /**
          * @description Upvote a comment
          * @param id Comment id
          * @returns {Promise.<TResult>}
          */
-        upvoteComment: (id) => {
-            return API.commentVote(id, 'upVote').then(comment => {
-                dispatch(updateComment(comment));
-            });
+        upvoteComment: id => {
+            return dispatch(upvoteComment(id));
         },
     };
 };

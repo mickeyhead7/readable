@@ -1,13 +1,12 @@
 import sortBy from 'sort-by';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as API from '../../Utils/Api';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import PostList from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
-import { addCategories } from '../../Actions/categories';
-import { addPosts, deletePost, votePost } from '../../Actions/posts';
+import { fetchCategories } from '../../Actions/categories';
+import { deletePost, downvotePost, fetchPosts, upvotePost } from '../../Actions/posts';
 
 /**
  * @description Posts listing view
@@ -116,37 +115,27 @@ function mapStateToProps({ categories, posts, sort }) {
  */
 const mapDispatchToProps = dispatch => ({
     deletePost: id => {
-        return API.deletePost(id).then(() => {
-            dispatch(deletePost(id));
-        });
+        return dispatch(deletePost(id));
     },
     /**
      * @description Downvote a post
      * @param id Post id
      */
     downvotePost: id => {
-        return API.postVote(id, 'downVote').then(post => {
-            dispatch(votePost(post));
-        });
+        return dispatch(downvotePost(id));
     },
     /**
      * @description Fetch the categories
      */
     fetchCategories: () => {
-        return API.fetchCategories().then(categories => {
-            dispatch(addCategories(categories));
-        });
+        return dispatch(fetchCategories());
     },
     /**
      * @description Fetch posts
      * @param category Category filter
      */
     fetchPosts: (category = null) => {
-        const result = category ? API.fetchPosts(category) : API.fetchAllPosts();
-
-        return result.then(posts => {
-            dispatch(addPosts(posts));
-        });
+        return dispatch(fetchPosts(category));
     },
     /**
      * @description Sets the sort
@@ -154,16 +143,14 @@ const mapDispatchToProps = dispatch => ({
      * @param direction Sort direction
      */
     setSort: (field, direction) => {
-        dispatch(setSort('posts', field, direction));
+        return dispatch(setSort('posts', field, direction));
     },
     /**
      * @description Upvote a post
      * @param id Post id
      */
     upvotePost: id => {
-        return API.postVote(id, 'upVote').then(post => {
-            dispatch(votePost(post));
-        });
+        return dispatch(upvotePost(id));
     },
 });
 

@@ -2,13 +2,12 @@ import uuid from 'uuid/v4';
 import domPurify from 'dompurify';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as API from '../../Utils/Api';
 import * as Date from '../../Utils/Date';
 import React, { Component } from 'react';
 import PostForm from '../../Components/Post/Form';
-import { addPost, setEditPost, updatePost } from '../../Actions/posts';
 import { updateMessage } from '../../Actions/messages';
-import { addCategories } from '../../Actions/categories';
+import { fetchCategories } from '../../Actions/categories';
+import { addPost, fetchPost, setCurrentPost, updatePost } from '../../Actions/posts';
 
 /**
  * @description Post edit view
@@ -128,7 +127,7 @@ const mapStateToProps = ({ categories, posts }) => {
     return {
         categories: categories.categories || [],
         fetchCategories: propTypes.func.isRequired,
-        post: posts.edit,
+        post: posts.current,
     };
 };
 
@@ -143,33 +142,26 @@ const mapDispatchToProps = dispatch => {
          * @param post
          */
         addPost: post => {
-            return API.addPost(post).then(post => {
-                dispatch(addPost(post));
-                dispatch(setEditPost(post));
-            });
+            return dispatch(addPost(post));
         },
         /**
          * @description Clears the current post being edited in the store
          */
         clearPost: () => {
-            dispatch(setEditPost(null));
+            return dispatch(setCurrentPost(null));
         },
         /**
          * @description Fetch the categories
          */
         fetchCategories: () => {
-            return API.fetchCategories().then(categories => {
-                dispatch(addCategories(categories));
-            });
+            return dispatch(fetchCategories());
         },
         /**
          * Fetches a given post and adds it to the store
          * @param id Post id
          */
         fetchPost: id => {
-            return API.fetchPost(id).then(post => {
-                dispatch(setEditPost(post));
-            });
+            return dispatch(fetchPost(id));
         },
         /**
          * @description Sets the app message
@@ -186,10 +178,7 @@ const mapDispatchToProps = dispatch => {
          * @returns {Promise.<TResult>}
          */
         updatePost: post => {
-            return API.updatePost(post).then(post => {
-                dispatch(updatePost(post));
-                dispatch(setEditPost(post));
-            });
+            return dispatch(updatePost(post));
         },
     };
 };

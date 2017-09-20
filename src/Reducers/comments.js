@@ -1,12 +1,16 @@
 import { ADD_COMMENT, ADD_COMMENTS, DELETE_COMMENT, UPDATE_COMMENT } from '../Actions/comments';
 
+const initialState = {
+    comments: [],
+};
+
 /**
  * @description Comments reducer
  * @param state Current state
  * @param action Action to reduce
  * @returns {*}
  */
-const comments = (state = {}, action) => {
+const comments = (state = initialState, action) => {
     switch (action.type) {
         case ADD_COMMENT:
             return {
@@ -24,11 +28,9 @@ const comments = (state = {}, action) => {
                 comments: state.comments.filter(comment => comment.id !== action.id),
             };
         case UPDATE_COMMENT:
-            const comments = state.comments || [];
-
             return {
                 ...state,
-                comments: comments.map(comment => {
+                comments: state.comments.map(comment => {
                     if (comment.id === action.comment.id) {
                         comment = action.comment;
                     }
