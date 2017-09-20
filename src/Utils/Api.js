@@ -12,7 +12,7 @@ const postParams = {
     method: 'POST',
 };
 const putParams = {
-    method: 'POST',
+    method: 'PUT',
 };
 
 /**
@@ -129,6 +129,17 @@ export const postVote = (id, option) =>  fetch(`${uri}/posts/${id}`, {
     body: JSON.stringify({
         option,
     }),
+})
+    .then(res => res.json());
+
+/**
+ * @description Updates a comment
+ * @param comment Comment object
+ */
+export const updateComment = comment =>  fetch(`${uri}/comments/${comment.id}`, {
+    ...headers,
+    ...putParams,
+    body: JSON.stringify(comment),
 })
     .then(res => res.json());
 

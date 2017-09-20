@@ -16,6 +16,15 @@ class CommentForm extends Component {
     };
 
     /**
+     * @description Sets the state on mount
+     */
+    componentDidMount () {
+        this.setState({
+            body: this.props.body,
+        });
+    }
+
+    /**
      * @description Handles an input change
      * @param event Input event
      */
@@ -32,10 +41,17 @@ class CommentForm extends Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        this.props.onSubmit(this.state).then(() => {
-            this.setState({
-                body: '',
-            });
+        const { id, onSubmit } = this.props;
+
+        onSubmit({
+            body: this.state.body,
+            id,
+        }).then(() => {
+            if (!id) {
+                this.setState({
+                    body: '',
+                });
+            }
         }).catch(() => {});
     };
 
@@ -44,10 +60,12 @@ class CommentForm extends Component {
      * @returns {XML}
      */
     render () {
+        const { id } = this.props;
+
         return (
             <div className="comment-form" onSubmit={this.handleSubmit}>
                 <header className="comment-form-header">
-                    <h2>Add a comment</h2>
+                    <h2>{id ? 'Update comment' : 'Add a comment'}</h2>
                 </header>
                 <form className="comment-form-content">
                     <div className="form-row">
@@ -59,7 +77,7 @@ class CommentForm extends Component {
                         />
                     </div>
                     <div className="form-row">
-                        <button className="button">Submit comment</button>
+                        <button className="button">{id ? 'Update comment' : 'Add comment'}</button>
                     </div>
                 </form>
             </div>

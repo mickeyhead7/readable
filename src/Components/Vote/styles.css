@@ -23,12 +23,9 @@
 .vote-option {
     list-style: none;
     margin: 0 1em .5em;
-    width: calc(50% - 1em);
 }
 
-.vote-button {
-    width: 100%;
-}
+.vote-button {}
 
 .vote-button.upvote {}
 
@@ -36,7 +33,8 @@
     background-color: #c9322c;
 }
 
-.vote-button.downvote:hover {
+.vote-button.downvote:hover,
+.vote-button.downvote:focus {
     background-color: #A62621;
 }
 
@@ -45,8 +43,7 @@
     fill: #fff;
 }
 
-@media screen and (min-width: 40.0625em) {
-    .vote-option {
-        width: auto;
-    }
+.vote-button span {
+    display: inline-block;
+    text-indent: -9999em;
 }

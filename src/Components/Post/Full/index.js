@@ -80,6 +80,7 @@ const Post = props => {
                                     {...comment}
                                     onDeleteComment={onDeleteComment}
                                     onDownvote={onDownvoteComment}
+                                    onSubmitComment={onSubmitComment}
                                     onUpvote={onUpvoteComment}
                                 />
                             </div>

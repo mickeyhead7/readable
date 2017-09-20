@@ -17,6 +17,7 @@ import { addComment, addComments, deleteComment, updateComment } from '../../Act
  */
 class Post extends Component {
     static propTypes = {
+        addComment: propTypes.func.isRequired,
         comments: propTypes.array,
         deleteComment: propTypes.func.isRequired,
         downvoteComment: propTypes.func.isRequired,
@@ -24,8 +25,8 @@ class Post extends Component {
         fetchComments: propTypes.func.isRequired,
         fetchPost: propTypes.func.isRequired,
         setSort: propTypes.func.isRequired,
-        onSubmitComment: propTypes.func.isRequired,
         post: propTypes.object,
+        updateComment: propTypes.func.isRequired,
         upvoteComment: propTypes.func.isRequired,
         upvotePost: propTypes.func.isRequired,
         updateMessage: propTypes.func.isRequired,
@@ -73,7 +74,8 @@ class Post extends Component {
      * @param data
      */
     submitComment = data => {
-        const { post, onSubmitComment, updateMessage } = this.props;
+        const { post, addComment, updateComment, updateMessage } = this.props;
+        const messageId = uuid();
 
         if (!this.validateComment(data)) {
             updateMessage({
@@ -88,12 +90,26 @@ class Post extends Component {
         const commentData = {
             author: 'thingthree',
             body: domPurify.sanitize(data.body),
-            id: uuid(),
+            id: data.id || uuid(),
             parentId: post.id,
             timestamp: Date.getUnixTimestamp(),
         };
 
-        return onSubmitComment(commentData);
+        const result = data.id ? updateComment(commentData) : addComment(commentData);
+
+        return result.then(() => {
+            updateMessage({
+                body: 'Your comment was successfully updated',
+                id: messageId,
+                level: 'success',
+            });
+        }).catch(() => {
+            updateMessage({
+                body: 'There was an error saving your post',
+                id: messageId,
+                level: 'error',
+            });
+        });
     };
 
     /**
@@ -155,6 +171,16 @@ const mapStateToProps = ({ comments, posts, sort }) => {
 const mapDispatchToProps = dispatch => {
     return {
         /**
+         * @description Adds a comment to the store
+         * @param comment
+         * @returns {Promise.<TResult>}
+         */
+        addComment: comment => {
+            return API.addComment(comment).then(comment => {
+                dispatch(addComment(comment));
+            });
+        },
+        /**
          * @description Deletes a selected comment
          * @param id Comment id
          * @returns {Promise.<TResult>}
@@ -205,22 +231,22 @@ const mapDispatchToProps = dispatch => {
             });
         },
         /**
-         * @description Adds a comment to the store
-         * @param comment
-         * @returns {Promise.<TResult>}
-         */
-        onSubmitComment: comment => {
-            return API.addComment(comment).then(comment => {
-                dispatch(addComment(comment));
-            });
-        },
-        /**
          * @description Sets the sort
          * @param field Sort field
          * @param direction Sort direction
          */
         setSort: (field, direction) => {
             return dispatch(setSort('comments', field, direction));
+        },
+        /**
+         * @description Updates a comment in the store
+         * @param comment
+         * @returns {Promise.<TResult>}
+         */
+        updateComment: comment => {
+            return API.updateComment(comment).then(comment => {
+                dispatch(updateComment(comment));
+            });
         },
         /**
          * @description Sets the app message

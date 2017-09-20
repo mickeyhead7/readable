@@ -89,6 +89,7 @@ class Posts extends Component {
                         posts={posts}
                     />
                 </main>
+
             </div>
         );
     }

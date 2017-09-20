@@ -25,7 +25,6 @@ const comments = (state = {}, action) => {
             };
         case UPDATE_COMMENT:
             const comments = state.comments || [];
-            const currentComment = action.comment;
 
             return {
                 ...state,
@@ -36,7 +35,6 @@ const comments = (state = {}, action) => {
 
                     return comment;
                 }),
-                currentComment,
             };
         default:
             return state;
