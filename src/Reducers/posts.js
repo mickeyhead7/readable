@@ -53,9 +53,9 @@ const posts = (state = initialState, action) => {
                 current: action.post,
             };
         case VOTE_POST:
-            const curent = state.curent && state.curent.id === action.post.id
-                ? state.curent = action.post
-                : state.curent;
+            const current = state.current && state.current.id === action.post.id
+                ? state.current = action.post
+                : state.current;
 
             return {
                 ...state,
@@ -66,7 +66,7 @@ const posts = (state = initialState, action) => {
 
                     return post;
                 }),
-                curent,
+                current,
             };
         default:
             return state;
