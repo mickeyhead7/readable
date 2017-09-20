@@ -7,6 +7,7 @@ import * as Date from '../../Utils/Date';
 import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import PostFull from '../../Components/Post/Full';
+import NotFound from '../../Components/Post/NotFound';
 import { updateMessage } from '../../Actions/messages';
 import { downvotePost, fetchPost, upvotePost } from '../../Actions/posts';
 import {
@@ -137,7 +138,7 @@ class Post extends Component {
 
         return (
             <main>
-                {post? (
+                {post && post.id ? (
                     <PostFull
                         {...post}
                         comments={sortedComments || []}
@@ -149,7 +150,9 @@ class Post extends Component {
                         onDownvoteComment={downvoteComment}
                         onUpvoteComment={upvoteComment}
                     />
-                ) : null}
+                ) : (
+                    <NotFound />
+                )}
             </main>
         );
     }
