@@ -82,7 +82,7 @@ class Post extends Component {
                 <section className="post-partial-body">
                     {body}
                 </section>
-                <footer>
+                <footer className="post-partial-footer">
                     <div className="post-partial-vote">
                         <Vote
                             id={id}
