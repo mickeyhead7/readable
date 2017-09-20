@@ -74,7 +74,7 @@ class Edit extends Component {
             body: domPurify.sanitize(data.body),
             category: domPurify.sanitize(data.category),
             id: data.id ? data.id : uuid(),
-            timestamp: Date.getUnixTimestamp(),
+            timestamp: Date.getCurrentUnixTimestamp(),
             title: domPurify.sanitize(data.title),
         };
 

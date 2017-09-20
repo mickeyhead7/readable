@@ -92,7 +92,7 @@ class Post extends Component {
             body: domPurify.sanitize(data.body),
             id: data.id || uuid(),
             parentId: post.id,
-            timestamp: Date.getUnixTimestamp(),
+            timestamp: Date.getCurrentUnixTimestamp(),
         };
 
         const result = data.id ? updateComment(commentData) : addComment(commentData);

@@ -23,6 +23,10 @@
     margin: 0 0 2em;
 }
 
+.post-full-meta small {
+    display: block;
+}
+
 .post-full-content {
     background: #fff;
 }

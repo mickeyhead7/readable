@@ -14,6 +14,6 @@ export const format = (timestamp, format) => {
  * @description Gets the current unix timestamp
  * @returns {number} Unix timestamp
  */
-export const getUnixTimestamp = () => {
-    return moment().unix();
+export const getCurrentUnixTimestamp = () => {
+    return moment().unix() * 1000;
 };

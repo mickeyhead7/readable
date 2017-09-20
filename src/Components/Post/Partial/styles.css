@@ -13,6 +13,11 @@
     margin: 0 0 1em;
 }
 
+.post-partial-meta small {
+    display: block;
+    margin: 0 0 .5em;
+}
+
 .post-partial-body {
     margin: 0 0 1em;
 }
