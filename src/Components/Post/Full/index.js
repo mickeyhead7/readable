@@ -21,6 +21,7 @@ class Post extends Component {
     static propTypes = {
         comments: propTypes.array.isRequired,
         onDeleteComment: propTypes.func.isRequired,
+        onDeletePost: propTypes.func.isRequired,
         onDownvoteComment: propTypes.func.isRequired,
         onDownvotePost: propTypes.func.isRequired,
         onSort: propTypes.func.isRequired,
@@ -50,6 +51,10 @@ class Post extends Component {
         }).catch(() => {});
     };
 
+    /**
+     * @description Renders the full post
+     * @returns {*}
+     */
     render () {
         const {
             author,
@@ -58,6 +63,7 @@ class Post extends Component {
             comments,
             id,
             onDeleteComment,
+            onDeletePost,
             onDownvoteComment,
             onDownvotePost,
             onSort,
@@ -90,12 +96,22 @@ class Post extends Component {
                             {body}
                         </section>
                         <footer className="post-full-footer">
-                            <Vote
-                                id={id}
-                                onDownvote={onDownvotePost}
-                                onUpvote={onUpvotePost}
-                                voteScore={voteScore}
-                            />
+                            <div className="post-full-vote">
+                                <Vote
+                                    id={id}
+                                    onDownvote={onDownvotePost}
+                                    onUpvote={onUpvotePost}
+                                    voteScore={voteScore}
+                                />
+                            </div>
+                            <ul className="post-full-actions">
+                                <li className="post-full-action">
+                                    <Link to={`/post/${id}/edit`}>Edit</Link>
+                                </li>
+                                <li className="post-full-action">
+                                    <button onClick={onDeletePost}>Delete</button>
+                                </li>
+                            </ul>
                         </footer>
                     </div>
                 </article>

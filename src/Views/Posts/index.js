@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import sortBy from 'sort-by';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -5,6 +6,7 @@ import React, { Component } from 'react';
 import { setSort } from '../../Actions/sort';
 import PostList from '../../Components/Posts';
 import Navigation from '../../Components/Navigation';
+import { updateMessage } from '../../Actions/messages';
 import { fetchCategories } from '../../Actions/categories';
 import { deletePost, downvotePost, fetchPosts, upvotePost } from '../../Actions/posts';
 
@@ -22,6 +24,7 @@ class Posts extends Component {
         posts: propTypes.array,
         setSort: propTypes.func.isRequired,
         sort: propTypes.object.isRequired,
+        updateMessage: propTypes.func.isRequired,
         upvotePost: propTypes.func.isRequired,
     };
 
@@ -35,6 +38,23 @@ class Posts extends Component {
         fetchCategories();
         fetchPosts(category);
     }
+
+    /**
+     * @description Deletes a selected post
+     * @param id
+     */
+    deletePost = id => {
+        const { deletePost, posts, updateMessage } = this.props;
+        const post = posts.filter(post => post.id === id).shift();
+
+        deletePost(id).then(() => {
+            updateMessage({
+                body: `The post "${post.title}" has successfully been deleted`,
+                id: uuid(),
+                level: 'success',
+            });
+        });
+    };
 
     /**
      * @description Fetch new category posts if a category change is detected
@@ -71,7 +91,7 @@ class Posts extends Component {
      * @returns {XML}
      */
     render () {
-        const { categories, deletePost, downvotePost, setSort, upvotePost } = this.props;
+        const { categories, downvotePost, setSort, upvotePost } = this.props;
         const posts = this.sortPosts();
 
         return (
@@ -81,7 +101,7 @@ class Posts extends Component {
                 />
                 <main>
                     <PostList
-                        onDeletePost={deletePost}
+                        onDeletePost={this.deletePost}
                         onDownvote={downvotePost}
                         onSort={setSort}
                         onUpvote={upvotePost}
@@ -144,6 +164,15 @@ const mapDispatchToProps = dispatch => ({
      */
     setSort: (field, direction) => {
         return dispatch(setSort('posts', field, direction));
+    },
+    /**
+     * @description Sets the app message
+     * @param body Message body
+     * @param level Message level
+     * @returns {*}
+     */
+    updateMessage: ({ body, level, id, timeout }) => {
+        return dispatch(updateMessage({ body, level, id, timeout }));
     },
     /**
      * @description Upvote a post

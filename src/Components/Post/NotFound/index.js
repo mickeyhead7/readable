@@ -12,7 +12,7 @@ const NotFound = () => {
     return (
         <div className="post-not-found">
             <header>
-                <h1>Sorry, post not found</h1>
+                <h1>This post has been deleted</h1>
             </header>
             <section>
                 <p>

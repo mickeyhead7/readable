@@ -9,15 +9,8 @@ import { setSort } from '../../Actions/sort';
 import PostFull from '../../Components/Post/Full';
 import NotFound from '../../Components/Post/NotFound';
 import { updateMessage } from '../../Actions/messages';
-import { downvotePost, fetchPost, upvotePost } from '../../Actions/posts';
-import {
-    addComment,
-    deleteComment,
-    downvoteComment,
-    fetchComments,
-    updateComment,
-    upvoteComment,
-} from '../../Actions/comments';
+import { deletePost, downvotePost, fetchPost, upvotePost } from '../../Actions/posts';
+import { addComment, deleteComment, downvoteComment, fetchComments, updateComment, upvoteComment } from '../../Actions/comments';
 
 /**
  * @description Post view
@@ -27,6 +20,7 @@ class Post extends Component {
         addComment: propTypes.func.isRequired,
         comments: propTypes.array,
         deleteComment: propTypes.func.isRequired,
+        deletePost: propTypes.func.isRequired,
         downvoteComment: propTypes.func.isRequired,
         downvotePost: propTypes.func.isRequired,
         fetchComments: propTypes.func.isRequired,
@@ -51,6 +45,21 @@ class Post extends Component {
     }
 
     /**
+     * @description Deletes the current post
+     */
+    deletePost = () => {
+        const { deletePost, post, updateMessage } = this.props;
+
+        deletePost(post.id).then(() => {
+            updateMessage({
+                body: `The post "${post.title}" has successfully been deleted`,
+                id: uuid(),
+                level: 'success',
+            });
+        });
+    };
+
+    /**
      * @description Sorts the post comments
      * @returns {*} Sorted comments
      */
@@ -65,15 +74,6 @@ class Post extends Component {
         const direction = sort.direction === 'desc' ? '-' : '';
 
         return comments.sort(sortBy(`${direction}${field}`));
-    };
-
-    /**
-     * @description Validates a comment
-     * @param data Comment data
-     * @returns {boolean}
-     */
-    validateComment = data => {
-        return !!data.body;
     };
 
     /**
@@ -120,6 +120,15 @@ class Post extends Component {
     };
 
     /**
+     * @description Validates a comment
+     * @param data Comment data
+     * @returns {boolean}
+     */
+    validateComment = data => {
+        return !!data.body;
+    };
+
+    /**
      * @description Renders the post view
      * @returns {XML}
      */
@@ -143,6 +152,7 @@ class Post extends Component {
                         {...post}
                         comments={sortedComments || []}
                         onDeleteComment={deleteComment}
+                        onDeletePost={this.deletePost}
                         onDownvotePost={downvotePost}
                         onUpvotePost={upvotePost}
                         onSort={setSort}
@@ -194,6 +204,9 @@ const mapDispatchToProps = dispatch => {
          */
         deleteComment: id => {
             return dispatch(deleteComment(id));
+        },
+        deletePost: id => {
+            return dispatch(deletePost(id));
         },
         /**
          * @description Downvote a comment

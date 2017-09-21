@@ -34,6 +34,7 @@ const posts = (state = initialState, action) => {
             return {
                 ...state,
                 posts: state.posts.filter(post => post.id !== action.id),
+                current: null,
             };
         case SET_CURRENT_POST:
             return {

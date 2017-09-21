@@ -37,6 +37,19 @@
     margin: 0 0 2em;
 }
 
+.post-full-vote {
+    margin: 0 0 2em;
+}
+
+.post-full-actions {
+    display: flex;
+    margin: 0 -1em;
+}
+
+.post-full-action {
+    list-style: none;
+}
+
 .post-full-comment-form {
     margin: 0 2em 2em;
 }
