@@ -91,13 +91,15 @@ class Posts extends Component {
      * @returns {XML}
      */
     render () {
-        const { categories, downvotePost, setSort, upvotePost } = this.props;
+        const { categories, downvotePost, match, setSort, upvotePost } = this.props;
+        const { category } = match.params;
         const posts = this.sortPosts();
 
         return (
             <div>
                 <Navigation
                     categories={categories}
+                    active={category}
                 />
                 <main>
                     <PostList

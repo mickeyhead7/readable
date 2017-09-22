@@ -1,8 +1,7 @@
-.nav {
-    border-bottom: 1px solid #e4e4e4;
-}
+.nav {}
 
 .nav-menu {
+    background-color: #e4e4e4;
     display: flex;
     flex-wrap: wrap;
 }
@@ -19,7 +18,15 @@
 }
 
 .nav-link:hover {
-    background-color: #e4e4e4;
+    background-color: #dadada;
+}
+
+.nav-link-active {
+    background-color: #efefef;
+}
+
+.nav-link-active:hover {
+    background-color: #efefef;
 }
 
 .new-post {
